@@ -8,7 +8,10 @@ def home(request):
    return render(request, "home.html")
 
 def profile(request):
-   return render(request, "profile.html", {'user' : request.user})
+   if request.user.is_authenticated():
+   	return render(request, "profile.html", {'user' : request.user})
+   else:
+        return redirect(home)
  
 def userLogin(request):
     if request.method == 'POST':
@@ -23,7 +26,7 @@ def userLogin(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form' : form})
 
-def pagelogout(request):
+def userLogout(request):
     if request.method == "POST":
         logout(request)
         return redirect(home)

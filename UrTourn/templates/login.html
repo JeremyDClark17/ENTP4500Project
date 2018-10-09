@@ -1,8 +1,17 @@
 {% block content %}
-  <h2>Log in</h2>
+{% load static %}
+<head>
+  <title>UrTourn</title>
+  <link rel="stylesheet" href="{% static 'css/LoginSignup.css' %}">
+	<div class="loading">
+		<div class="circle light"></div>
+		<div class="circle dark"></div>
+		<div class="branding"></div>
+	</div>
   {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>
   {% endif %}
+  <div class="login">
   <form method="post">
     {% csrf_token %}
     {% for field in form %}
@@ -17,6 +26,7 @@
         {% endfor %}
       </p>
     {% endfor %}
-    <button type="submit">Sign up</button>
+    <button type="submit">Login</button>
   </form>
+  </div>
 {% endblock %}
