@@ -19,4 +19,9 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', 'UrTourn.views.home', name = 'home'),
+    url(r'^login/', 'UrTourn.views.userLogin', name = 'home'),
+    url(r'^logout/', 'UrTourn.views.userLogout', name = 'logout'),
+    url(r'^signup/', 'UrTourn.views.signup', name = 'signup'),
+    url(r'^profile/', 'UrTourn.views.profile', name = 'profile'),
 ]
