@@ -1,17 +1,12 @@
 from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import SignUpForm
+from .forms import SignUpForm, ProfileForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
 
 def home(request):
    return render(request, "home.html")
-
-def profile(request):
-   if request.user.is_authenticated():
-   	return render(request, "profile.html", {'user' : request.user})
-   else:
-        return redirect(home)
  
 def userLogin(request):
     if request.method == 'POST':
@@ -44,3 +39,25 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+def profile(request):
+   if request.user.is_authenticated():
+        return render(request, "profile.html", {'user' : request.user})
+   else:
+        return redirect(home)
+
+def update_profile(request):
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            profile_form = ProfileForm(request.POST, instance=request.user.profile)
+            if profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, ('Your profile was successfully updated!'))
+                return redirect(profile)
+            else:
+                messages.error(request, ('Please correct the error below.'))
+        else:
+            profile_form = ProfileForm(instance=request.user.profile)
+        return render(request, "update_profile.html", {'profile_form' : profile_form})
+    else:
+        return redirect(home)

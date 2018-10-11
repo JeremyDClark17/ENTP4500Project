@@ -1,0 +1,20 @@
+{% load static %}
+<head>
+  <title>UrTourn</title>
+  <link rel="stylesheet" href="{% static 'css/LoginSignup.css' %}">
+<head>
+  <div class="login">
+    <form method="post">
+      {% csrf_token %}
+    {% for field in profile_form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <button type="submit">Save changes</button>
+  <div class="login">
+</form>

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
+from UrTourn.models import Profile
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
@@ -11,3 +11,12 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+
+class ProfileForm(forms.ModelForm):
+    bio = forms.CharField(max_length=500, required=False)
+    location = forms.CharField(max_length=30, required=False)
+    birth_date = forms.DateField(required=False)
+
+    class Meta:
+        model = Profile
+        fields = ('bio', 'location', 'birth_date',)

@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^logout/', 'UrTourn.views.userLogout', name = 'logout'),
     url(r'^signup/', 'UrTourn.views.signup', name = 'signup'),
     url(r'^profile/', 'UrTourn.views.profile', name = 'profile'),
+    url(r'^update_profile/', 'UrTourn.views.update_profile', name = 'update'),
 ]
