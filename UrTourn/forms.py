@@ -13,7 +13,7 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
 
 class ProfileForm(forms.ModelForm):
-    bio = forms.CharField(max_length=500, required=False)
+    bio = forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "80", 'rows': "20"}), required=False)
     location = forms.CharField(max_length=30, required=False)
     birth_date = forms.DateField(required=False)
 
