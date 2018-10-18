@@ -86,3 +86,15 @@ button {
     text-shadow: 0 1px rgba(0, 0, 0, 0.3);
     width: 100%;
 }
+
+a {
+    color: #28004F;
+}
+
+label{
+    font-size: 20px;
+}
+
+input {
+    padding: 20px;
+}

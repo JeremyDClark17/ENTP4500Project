@@ -12,6 +12,8 @@ class Profile(models.Model):
     rating = models.IntegerField(default=0, blank=True)
     gamertag = models.CharField(max_length=20, blank=True)
     profile_image = models.ImageField(upload_to='profile_images/')
+    favorite_games = models.TextField(max_length=140, blank=True)
+    current_interests = models.TextField(max_length=200, blank=True)
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):

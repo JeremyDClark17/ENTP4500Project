@@ -40,8 +40,8 @@
                             <div class="twelve wide column">
                                 <h2>{{ user.username }}</h2>
                                 <h3>Preferred Gamertag: {{ user.profile.gamertag }}</h3>
+				<h5>Favorite Games: {{ user.profile.favorite_games }}</h5>
 				<h5>Birthday: {{ user.profile.birth_date }}</h5>
-				<h5>Email: {{ user.email }}</h5>
                                 <h5>Location: {{ user.profile.location }}</h5>
 				<h5>Player Bio: {{ user.profile.bio }}</h5>
                             </div>
@@ -77,10 +77,10 @@
                     </div>
 		    <div class="ui segment">
                         <div id="bio-header">
-                            <b>Gamertags: </b>
+                            <b>Rating: </b>
                         </div>
                         <div id="bio-body">
-			    <br><br><br><br>
+			    <br>THE BEST!!!<br><br><br>
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,11 @@
                     Currently Interested in Esports tournaments for:
                 </div>
                 <div id="interestedin-body">
-                    World of Warcraft PvP
+                   {% if user.profile.current_interests %}
+			{{user.profile.current_interests }}
+		   {% else %}
+			None
+		   {% endif %}
                 </div>
             </div>
             <div class="ui segment" id="events-organized">

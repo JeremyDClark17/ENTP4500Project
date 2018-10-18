@@ -18,7 +18,9 @@ class ProfileForm(forms.ModelForm):
     gamertag = forms.CharField(max_length=20, required=False)
     birth_date = forms.DateField(required=False)
     profile_image = forms.ImageField(required=False)
+    favorite_games = forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "80", 'rows': "8"}), required=False)
+    current_interests = forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "80", 'rows': "10"}), required=False)
 
     class Meta:
         model = Profile
-        fields = ('bio', 'location', 'gamertag', 'birth_date', 'profile_image',)
+        fields = ('bio', 'location', 'gamertag', 'birth_date', 'profile_image', 'favorite_games', 'current_interests')
