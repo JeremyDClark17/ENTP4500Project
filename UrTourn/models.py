@@ -9,11 +9,13 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
-    rank = models.IntegerField(default=0, blank=True)
+    rating = models.IntegerField(default=0, blank=True)
+    gamertag = models.CharField(max_length=20, blank=True)
+    profile_image = models.ImageField(upload_to='profile_images/')
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-    else:
-        instance.profile.save()
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+        else:
+            instance.profile.save()

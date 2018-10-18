@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="{% static 'css/update_profile.css' %}">
 <head>
   <div class="login">
-    <form method="post">
+    <form method="post" enctype = "multipart/form-data">
       {% csrf_token %}
     {% for field in profile_form %}
       <p>

@@ -15,8 +15,10 @@ class SignUpForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     bio = forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "80", 'rows': "20"}), required=False)
     location = forms.CharField(max_length=30, required=False)
+    gamertag = forms.CharField(max_length=20, required=False)
     birth_date = forms.DateField(required=False)
+    profile_image = forms.ImageField(required=False)
 
     class Meta:
         model = Profile
-        fields = ('bio', 'location', 'birth_date',)
+        fields = ('bio', 'location', 'gamertag', 'birth_date', 'profile_image',)

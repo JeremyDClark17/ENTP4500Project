@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,4 +27,4 @@ urlpatterns = [
     url(r'^signup/', 'UrTourn.views.signup', name = 'signup'),
     url(r'^profile/', 'UrTourn.views.profile', name = 'profile'),
     url(r'^update_profile/', 'UrTourn.views.update_profile', name = 'update'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

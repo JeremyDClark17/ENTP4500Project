@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <title>UrTourn</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.css">
+    <link rel="stylesheet" href="{% static 'css/playerProfile.css' %}">
+</head>
+
+<body>
+    <div>
+        <div class="ui inverted menu">
+            <div class="left menu">
+                <a class="ui purple large header" href="/">URTOURN.GG</a>
+            </div>
+            <div class="right menu">
+                <button class="ui inverted grey button">Social Media</button>
+                <button class="ui inverted grey button">Players</button>
+                <button class="ui inverted grey button">Teams</button>
+                <button class="ui inverted grey button">Tournaments</button>
+                <button class="ui inverted purple button">Profile</button>
+            </div>
+        </div>
+        <div class="ui container">
+            <div class="ui grid">
+                <div class="twelve wide column">
+                    <div class="ui segment">
+                        <div class="ui grid">
+                            <div class="four wide column">
+				{% if user.profile.profile_image %}
+				    <img class="ui image" src="{{MEDIA_ROOT}}{{user.profile.profile_image.url}}" alt="">
+				{% else %}
+				    <p>NO IMAGE</p>
+				{% endif %}
+                            </div>
+                            <div class="twelve wide column">
+                                <h2>{{ user.username }}</h2>
+                                <h3>Preferred Gamertag: {{ user.profile.gamertag }}</h3>
+				<h5>Birthday: {{ user.profile.birth_date }}</h5>
+				<h5>Email: {{ user.email }}</h5>
+                                <h5>Location: {{ user.profile.location }}</h5>
+				<h5>Player Bio: {{ user.profile.bio }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="four wide column" align="center">
+                    <div class="ui vertical buttons">
+                        <div class="item">
+                            <a class="ui labeled icon black button" href="https://google.com">
+				<i class="envelope icon"></i>
+                                Message
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a class="ui labeled icon black button" href="#">
+		                <i class="user plus icon"></i>
+                                Follow
+                            </a>
+                        </div>
+			<div class="item">
+			    <a class="ui labeled icon black button" href="{% url 'UrTourn.views.update_profile' %}">
+				<i class="user icon"></i>
+				Edit Profile
+			    </a>
+			</div>
+                        <div class="item">
+                            <a class="ui labeled icon black button" href="{% url 'UrTourn.views.userLogout' %}">
+				<i class="window close icon"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+		    <div class="ui segment">
+                        <div id="bio-header">
+                            <b>Gamertags: </b>
+                        </div>
+                        <div id="bio-body">
+			    <br><br><br><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui segment" id="interested-in">
+                <div class="ui purple header" id="interstedin-header" align="center">
+                    Currently Interested in Esports tournaments for:
+                </div>
+                <div id="interestedin-body">
+                    World of Warcraft PvP
+                </div>
+            </div>
+            <div class="ui segment" id="events-organized">
+
+                <div class="ui purple header" id="events-organized-header" align="center">
+                    Events Organized:
+                </div>
+                <div id="events-organized-body">
+                    None
+                </div>
+            </div>
+        </div>
+
+</body>
+
+</html>

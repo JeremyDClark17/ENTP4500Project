@@ -22,9 +22,8 @@ def userLogin(request):
     return render(request, 'login.html', {'form' : form})
 
 def userLogout(request):
-    if request.method == "POST":
-        logout(request)
-        return redirect(home)
+    logout(request)
+    return redirect(home)
 
 def signup(request):
     if request.method == 'POST':
@@ -42,14 +41,14 @@ def signup(request):
 
 def profile(request):
    if request.user.is_authenticated():
-        return render(request, "profile.html", {'user' : request.user})
+        return render(request, "profilev2.html", {'user' : request.user})
    else:
         return redirect(home)
 
 def update_profile(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
-            profile_form = ProfileForm(request.POST, instance=request.user.profile)
+            profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
             if profile_form.is_valid():
                 profile_form.save()
                 messages.success(request, ('Your profile was successfully updated!'))
