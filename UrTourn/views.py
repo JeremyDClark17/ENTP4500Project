@@ -43,7 +43,8 @@ def profile(request):
    if request.user.is_authenticated():
         return render(request, "profilev2.html", {'user' : request.user})
    else:
-        return redirect(home)
+	return redirect(home)
+
 
 def update_profile(request):
     if request.user.is_authenticated():
@@ -60,3 +61,7 @@ def update_profile(request):
         return render(request, "update_profile.html", {'profile_form' : profile_form})
     else:
         return redirect(home)
+
+def delete_profile(request):
+    request.user.delete()
+    return redirect(home)	

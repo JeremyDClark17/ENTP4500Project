@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^signup/', 'UrTourn.views.signup', name = 'signup'),
     url(r'^profile/', 'UrTourn.views.profile', name = 'profile'),
     url(r'^update_profile/', 'UrTourn.views.update_profile', name = 'update'),
+    url(r'^delete_profile/', 'UrTourn.views.delete_profile', name = 'update'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
