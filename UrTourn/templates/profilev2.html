@@ -39,7 +39,6 @@
                             </div>
                             <div class="twelve wide column">
                                 <h2>{{ user.username }}</h2>
-				<h3>ID: {{ user.id }}</h3>
                                 <h3>Preferred Gamertag: {{ user.profile.gamertag }}</h3>
 				<h5>Favorite Games: {{ user.profile.favorite_games }}</h5>
 				<h5>Birthday: {{ user.profile.birth_date }}</h5>
@@ -51,6 +50,7 @@
                 </div>
                 <div class="four wide column" align="center">
                     <div class="ui vertical buttons">
+                        {% if user != currentUser %}
                         <div class="item">
                             <a class="ui labeled icon black button" href="https://google.com">
 				<i class="envelope icon"></i>
@@ -63,6 +63,7 @@
                                 Follow
                             </a>
                         </div>
+			{% else %}
 			<div class="item">
 			    <a class="ui labeled icon black button" href="{% url 'UrTourn.views.update_profile' %}">
 				<i class="user icon"></i>
@@ -81,13 +82,18 @@
                                 Delete Profile
                             </a>
                         </div>
+                        {% endif %}
                     </div>
 		    <div class="ui segment">
                         <div id="bio-header">
                             <b>Rating: </b>
                         </div>
                         <div id="bio-body">
-			    <br>THE BEST!!!<br><br><br>
+                        {% if user != currentUser %}
+			    <br><br>THE BEST!!!<br><br><br><br><br><br>
+			{% else %}
+			    <br><br>THE BEST!!<br><br><br><br>
+			{% endif %}
                         </div>
                     </div>
                 </div>

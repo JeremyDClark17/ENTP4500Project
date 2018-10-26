@@ -3,10 +3,12 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, ProfileForm, TournamentForm
 from .models import Tournament
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
 from django.core import serializers
 from django.template import loader
+from django.shortcuts import get_object_or_404
 
 def home(request):
    return render(request, "home.html")
@@ -42,13 +44,21 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
+def profiles(request, Username):
+    try:
+        template = loader.get_template("profilev2.html")
+        user = User.objects.get(username=Username)
+        currentUser = request.user
+        context = {'user' : user, 'currentUser' : currentUser}
+        return HttpResponse(template.render(context, request))
+    except User.DoesNotExist:
+        return redirect(signup)
+
 def profile(request):
-   if request.user.is_authenticated():
-        return render(request, "profilev2.html", {'user' : request.user})
-   else:
-	return redirect(home)
-
-
+    if request.user.is_authenticated():
+        return redirect('/u/%s' % request.user.username )
+    else:
+        return redirect(home)
 def update_profile(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
@@ -83,13 +93,13 @@ def tournament(request, index):
     if request.user.id == tournament.host.id:
       userHost = True
     template = loader.get_template("tournament.html")
-    context = {'tournament' : tournament, 'count' : count, 'userStatus' : userStatus, 'tournamentJoinable' : tournamentJoinable, 'userHost' : userHost}
+    context = {'tournament' : tournament, 'count' : count, 'userStatus' : userStatus, 'tournamentJoinable' : tournamentJoinable, 'userHost' : userHost, 'user' : request.user}
     return HttpResponse(template.render(context, request))
 
 def tournaments(request):
     tournaments = Tournament.objects.all()
     template = loader.get_template("tournamentsHome.html")
-    context = {'tournaments' : tournaments}
+    context = {'tournaments' : tournaments, 'user' : request.user}
     return HttpResponse(template.render(context, request))
 
 def create_tournament(request):
