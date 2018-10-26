@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
+import uuid
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -21,3 +23,19 @@ class Profile(models.Model):
             Profile.objects.create(user=instance)
         else:
             instance.profile.save()
+
+    def __str__(self):
+        return self.user
+
+class Tournament(models.Model):
+    tournament_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=40)
+    host = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    game = models.CharField(max_length=40)
+    tournament_type = models.CharField(max_length=40)
+    size = models.IntegerField(default=0)
+    description = models.TextField(max_length=200)
+    players = models.ManyToManyField(User, related_name="players")
+
+    def __str__(self):
+	return self.name

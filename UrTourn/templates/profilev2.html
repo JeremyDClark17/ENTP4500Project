@@ -18,11 +18,11 @@
                 <a class="ui purple large header" href="/">URTOURN.GG</a>
             </div>
             <div class="right menu">
-                <button class="ui inverted grey button">Social Media</button>
-                <button class="ui inverted grey button">Players</button>
-                <button class="ui inverted grey button">Teams</button>
-                <button class="ui inverted grey button">Tournaments</button>
-                <button class="ui inverted purple button">Profile</button>
+                <a href="/"><button class="ui inverted grey button">Social Media</button></a>
+                <a href="/"><button class="ui inverted grey button">Players</button></a>
+                <a href="/"><button class="ui inverted grey button">Teams</button></a>
+                <a href="{% url 'UrTourn.views.tournaments' %}"><button class="ui inverted grey button">Tournaments</button></a>
+                <a href="{% url 'UrTourn.views.profile' %}"><button class="ui purple button">Profile</button></a>
             </div>
         </div>
         <div class="ui container">
@@ -39,6 +39,7 @@
                             </div>
                             <div class="twelve wide column">
                                 <h2>{{ user.username }}</h2>
+				<h3>ID: {{ user.id }}</h3>
                                 <h3>Preferred Gamertag: {{ user.profile.gamertag }}</h3>
 				<h5>Favorite Games: {{ user.profile.favorite_games }}</h5>
 				<h5>Birthday: {{ user.profile.birth_date }}</h5>

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from UrTourn.models import Profile
+from UrTourn.models import Profile, Tournament
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
@@ -24,3 +24,14 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('bio', 'location', 'gamertag', 'birth_date', 'profile_image', 'favorite_games', 'current_interests')
+
+class TournamentForm(forms.ModelForm):
+    name = forms.CharField(max_length=40, required=True)
+    game = forms.CharField(max_length=40, required=True)
+    tournament_type = forms.CharField(max_length=40, required=True)
+    size = forms.IntegerField(required=True)
+    description = forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "80", 'rows': "20"}), required=True)
+
+    class Meta:
+	model = Tournament
+	fields = ('name', 'game', 'tournament_type', 'size', 'description')
