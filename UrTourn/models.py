@@ -16,6 +16,7 @@ class Profile(models.Model):
     profile_image = models.ImageField(upload_to='profile_images/')
     favorite_games = models.TextField(max_length=140, blank=True)
     current_interests = models.TextField(max_length=200, blank=True)
+    followers = models.ManyToManyField(User, related_name="followers", blank=True)
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -25,7 +26,7 @@ class Profile(models.Model):
             instance.profile.save()
 
     def __str__(self):
-        return self.user
+        return self.user.username
 
 class Tournament(models.Model):
     tournament_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

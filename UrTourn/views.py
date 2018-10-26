@@ -49,7 +49,12 @@ def profiles(request, Username):
         template = loader.get_template("profilev2.html")
         user = User.objects.get(username=Username)
         currentUser = request.user
-        context = {'user' : user, 'currentUser' : currentUser}
+        followers = user.followers
+        following = False
+        #if user is on another profile and if they are following that person, mark True
+        if currentUser != user and currentUser in user.profile.followers.all():
+          following = True
+        context = {'user' : user, 'currentUser' : currentUser, 'followers' : followers, 'following' : following}
         return HttpResponse(template.render(context, request))
     except User.DoesNotExist:
         return redirect(signup)
@@ -59,6 +64,33 @@ def profile(request):
         return redirect('/u/%s' % request.user.username )
     else:
         return redirect(home)
+
+def follow(request, Username):
+    try:
+        user = User.objects.get(username=Username)
+        currentUser = request.user
+        #Logged in and not following user
+        if request.user.is_authenticated() and currentUser not in user.profile.followers.all():
+            user.profile.followers.add(request.user)
+            return redirect(profiles, user.username) 
+        else:
+            return redirect(userLogin)
+    except User.DoesNotExist:
+        return redirect(signup)
+
+def unfollow(request, Username):
+    try:
+        user = User.objects.get(username=Username)
+        currentUser = request.user
+        #Logged in and following user
+        if request.user.is_authenticated() and currentUser in user.profile.followers.all():
+            user.profile.followers.remove(request.user)
+            return redirect(profiles, user.username)
+        else:
+            return redirect(userLogin)
+    except User.DoesNotExist:
+        return redirect(signup)
+
 def update_profile(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
@@ -132,7 +164,7 @@ def leave_tournament(request, index):
       tourney.players.remove(request.user)
       return redirect(tournament, index)
     else:
-      return  redirect(userLogin)
+      return redirect(userLogin)
 
 def delete_tournament(request, index):
     tourney = Tournament.objects.get(tournament_id=index)
