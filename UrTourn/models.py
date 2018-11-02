@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
+from django.utils import timezone
 import uuid
 
 class Profile(models.Model):
@@ -32,6 +33,8 @@ class Tournament(models.Model):
     tournament_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=40)
     host = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    start_day = models.CharField(max_length=10)
+    start_time = models.CharField(max_length=7)
     game = models.CharField(max_length=40)
     tournament_type = models.CharField(max_length=40)
     size = models.IntegerField(default=0)
@@ -40,3 +43,9 @@ class Tournament(models.Model):
 
     def __str__(self):
 	return self.name
+
+class Message(models.Model):
+     sender = models.ForeignKey(User, related_name="sender")
+     reciever = models.ForeignKey(User, related_name="receiver")
+     msg_content = models.TextField()
+     created_at = models.DateTimeField(auto_now=True)

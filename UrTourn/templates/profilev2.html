@@ -17,7 +17,7 @@
        </div>
        <div class="right menu">
          <a href="/"><button class="ui inverted grey button">Social Media</button></a>
-         <a href="/"><button class="ui inverted grey button">Players</button></a>
+         <a href="{% url 'UrTourn.views.players' %}"><button class="ui inverted grey button">Players</button></a>
          <a href="/"><button class="ui inverted grey button">Teams</button></a>
          <a href="{% url 'UrTourn.views.tournaments' %}"><button class="ui inverted grey button">Tournaments</button></a>
          <a href="{% url 'UrTourn.views.profile' %}"><button class="ui purple button">Profile</button></a>
@@ -77,7 +77,7 @@
            {% else %}
              <div class="item">
                <a class="ui labeled icon black button" href="{% url 'UrTourn.views.update_profile' %}">
-                 <i class="user icon"></i>
+                 <i class="edit icon"></i>
                  Edit Profile
                </a>
              </div>

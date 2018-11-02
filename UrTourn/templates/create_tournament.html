@@ -14,6 +14,7 @@
     {% for field in form %}
       <p>
         {{ field.label_tag }}<br>
+        {{ field.help_text }}<br>
         {{ field }}
 	{% for error in field.errors %}
           <p style="color: red">{{ error }}</p>

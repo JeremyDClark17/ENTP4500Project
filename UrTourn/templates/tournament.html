@@ -44,7 +44,11 @@
           </a>
 	  {% endif %}
 	  {% if userHost == True %}
-	  <br><br><a class="ui labeled icon red button" href="{% url 'UrTourn.views.delete_tournament' index=tournament.tournament_id %}">
+          <a class="ui labeled icon purple button" href="{% url 'UrTourn.views.edit_tournament' index=tournament.tournament_id %}">
+            <i class="edit icon"></i>
+            Edit Tournament
+          </a>
+	  <a class="ui labeled icon red button" href="{% url 'UrTourn.views.delete_tournament' index=tournament.tournament_id %}">
             <i class="close icon"></i>
             Delete Tournament
           </a>
@@ -53,7 +57,7 @@
             <div class="ui grid">
               <div class="sixteen wide column">
       	        <h2>{{ tournament.name }}</h2>
-                <h3>Host: {{ tournament.host.username }}</h3>
+                <h3>Host: <a href="{% url 'UrTourn.views.profiles' Username=tournament.host.username %}">{{ tournament.host.username }}</a></h3>
                 <h3>Game: {{ tournament.game }}</h3>
                 <h5>Tournament Type: {{ tournament.tournament_type  }}</h5>
                 <h5>Size: {{ count  }}/{{ tournament.size }}</h5>
@@ -79,8 +83,8 @@
 		        //-- round 1
 		        [
 		            {
-		                player1: { name: "Player 1", winner: true, ID: 1, url: '#player1Profile' },
-		                player2: { name: "Player 2", ID: 2 , url: '#player2Profile'}
+		                player1: { name: "JeremyDClark17", winner: true, ID: 1, url: "{% url 'UrTourn.views.profiles' Username='JeremyDClark17' %}"},
+		                player2: { name: "ENTP4500Project", ID: 2 , url: "{% url 'UrTourn.views.profiles' Username='ENTP4500Project' %}"}
 		            },
 		            {
 		                player1: { name: "Player 3", winner: true, ID: 3, url: '#player3Profile' },

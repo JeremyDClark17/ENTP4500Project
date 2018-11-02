@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.core import serializers
 from django.template import loader
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 def home(request):
    return render(request, "home.html")
@@ -130,6 +131,13 @@ def tournament(request, index):
 
 def tournaments(request):
     tournaments = Tournament.objects.all()
+    query = request.GET.get("q")
+    if query:
+        tournaments = tournaments.filter(
+            Q(name__icontains=query)|
+            Q(game__icontains=query)|
+            Q(tournament_type__icontains=query)|
+            Q(host__username__icontains=query))
     template = loader.get_template("tournamentsHome.html")
     context = {'tournaments' : tournaments, 'user' : request.user}
     return HttpResponse(template.render(context, request))
@@ -145,8 +153,26 @@ def create_tournament(request):
         return redirect(tournaments)
       else:
         messages.error(request, ('Please correct the error(s) below'))
+        return render(request, "create_tournament.html", {'form' : form})
     else:
       return render(request, "create_tournament.html", {'form' : form})
+
+def edit_tournament(request, index):
+    tournament = Tournament.objects.get(tournament_id=index)
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            tournament_form = TournamentForm(request.POST, request.FILES, instance=tournament)
+            if tournament_form.is_valid():
+                tournament_form.save()
+                messages.success(request, ('Your tournament was successfully updated!'))
+                return redirect(tournaments)
+            else:
+                messages.error(request, ('Please correct the error(s) below.'))
+        else:
+            tournament_form = TournamentForm(instance=tournament)
+        return render(request, "edit_tournament.html", {'form' : tournament_form})
+    else:
+        return redirect(home)
 
 def join_tournament(request, index):
     tourney = Tournament.objects.get(tournament_id=index)
@@ -173,3 +199,12 @@ def delete_tournament(request, index):
         return redirect(tournaments)
     else:
         return redirect(userLogin)
+
+def players(request):
+    players = User.objects.all()
+    query = request.GET.get("q")
+    if query:
+        players = User.objects.filter(username__icontains=query)
+    template = loader.get_template("players.html")
+    context = {'players' : players, 'user' : request.user}
+    return HttpResponse(template.render(context, request))

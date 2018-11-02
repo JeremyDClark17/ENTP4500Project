@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from UrTourn.models import Profile, Tournament
+from django.utils import timezone
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
@@ -27,6 +28,8 @@ class ProfileForm(forms.ModelForm):
 
 class TournamentForm(forms.ModelForm):
     name = forms.CharField(max_length=40, required=True)
+    start_day = forms.CharField(max_length=10, help_text='MM/DD/YYYY', required=True)
+    start_time = forms.CharField(max_length=7, help_text='HH:MM(am/pm)', required=True)
     game = forms.CharField(max_length=40, required=True)
     tournament_type = forms.CharField(max_length=40, required=True)
     size = forms.IntegerField(required=True)
@@ -34,4 +37,4 @@ class TournamentForm(forms.ModelForm):
 
     class Meta:
 	model = Tournament
-	fields = ('name', 'game', 'tournament_type', 'size', 'description')
+	fields = ('name', 'start_day', 'start_time', 'game', 'tournament_type', 'size', 'description')

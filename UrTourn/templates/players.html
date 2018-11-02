@@ -17,9 +17,9 @@
             </div>
             <div class="right menu">
                 <a href="/"><button class="ui inverted grey button">Social Media</button></a>
-                <a href="{% url 'UrTourn.views.players' %}"><button class="ui inverted grey button">Players</button></a>
+                <a href="{% url 'UrTourn.views.players' %}"><button class="ui grey button">Players</button></a>
                 <a href="/"><button class="ui inverted grey button">Teams</button></a>
-                <a href="{% url 'UrTourn.views.tournaments' %}"><button class="ui grey button">Tournaments</button></a>
+                <a href="{% url 'UrTourn.views.tournaments' %}"><button class="ui inverted grey button">Tournaments</button></a>
                 <a href="{% url 'UrTourn.views.profile' %}"><button class="ui inverted purple button">Profile</button></a>
             </div>
         </div>
@@ -29,51 +29,38 @@
       <input type='text' name='q' placeholder='Search...' />
     </form> 
     <br>
-    <div class="item">
-      <a class="ui labeled icon purple button" href="{% url 'UrTourn.views.create_tournament' %}">
-        <i class="sitemap icon"></i>
-        Create Tournament
-      </a>
-    </div>
     <table class="ui celled padded table">
   <thead>
-    <tr><th class="single line">Name</th>
-    <th>Host</th>
-    <th>Game</th>
-    <th>Type</th>
-    <th>Start Day</th>
-    <th>Start Time</th>
-    <th>Size</th>
-  </tr></thead>
+    <tr>
+      <th class="two wide">Player</th>
+      <th>Gamertag</th>
+      <th>Favorite Games</th>
+    </tr>
+  </thead>
   <tbody>
-    {% for tournament in tournaments %}
+    {% for player in players %}
     <tr>
       <td>
-	<a href="{% url 'UrTourn.views.tournament' index=tournament.tournament_id %}"><b>{{ tournament.name }}</b></a>
+      {% if user.profile.profile_image %}
+        <a href="{% url 'UrTourn.views.profiles' Username=player.username %}">
+          <img class="ui image" src="{{MEDIA_ROOT}}{{player.profile.profile_image.url}}" alt="" width=150px>
+          <h3>{{ player.username }}</h3>
+        </a>
+      {% else %}
+        <a href="{% url 'UrTourn.views.profiles' Username=player.username %}">{{ player.username }}</a>
+      {% endif %}
       </td>
       <td>
-        <a href="{% url 'UrTourn.views.profiles' Username=tournament.host.username %}">{{ tournament.host.username }}</a>
+        {{ player.profile.gamertag }}
       </td>
       <td>
-        {{ tournament.game }}
+        {{ player.profile.favorite_games }}
       </td>
-      <td>
-        {{ tournament.tournament_type }}
-      </td>
-      <td>
-        {{ tournament.start_day }}
-      </td>
-      <td>
-        {{ tournament.start_time }}
-      </td>
-      <td>
-	{{ tournament.size }}
-      </td>	
     </tr>
     {% endfor %}
   </tbody>
   <tfoot>
-    <tr><th colspan="7">
+    <tr><th colspan="3">
       <div class="ui right floated pagination menu">
         <a class="icon item">
           <i class="left chevron icon"></i>
