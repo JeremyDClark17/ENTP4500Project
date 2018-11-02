@@ -204,7 +204,10 @@ def players(request):
     players = User.objects.all()
     query = request.GET.get("q")
     if query:
-        players = User.objects.filter(username__icontains=query)
+        players = User.objects.filter(
+                Q(username__icontains=query)|
+                Q(profile__gamertag__icontains=query)|
+                Q(profile__favorite_games__icontains=query))
     template = loader.get_template("players.html")
     context = {'players' : players, 'user' : request.user}
     return HttpResponse(template.render(context, request))
