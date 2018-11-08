@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=2, user-scalable=no" name="viewport" />
+    <meta content="Semantic-UI, Theme, Design, Template" name="keywords" />
+    <meta content="PPType" name="author" />
+    <meta content="#ffffff" name="theme-color" />
+    <title>UrTourn</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/stylesheets/default.css" rel="stylesheet" type="text/css" />
+    <link href="/static/stylesheets/pandoc-code-highlight.css" rel="stylesheet" type="text/css" />
+    <script src="/static/dist/jquery/jquery.min.js"></script>
+</head>
+<body>
+    <div class="pusher">
+        <div class="ui inverted vertical masthead center aligned segment">
+            <div class="ui container">
+                <div class="ui large secondary inverted pointing menu">
+                    <a class="toc item"><i class="sidebar icon"></i></a>
+                    <a class="active item" href="{% url 'UrTourn.views.home' %}">Home</a>
+                    <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Social Media</a>
+                    <a class="item" href="{% url 'UrTourn.views.players' %}">Players</a>
+                    <a class="item" href="{% url 'UrTourn.views.players' %}">Teams</a>
+                    <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
+                    <div class="right item">
+                    {% if request.user.is_authenticated %}
+                        <a class="ui inverted button" href="{% url 'UrTourn.views.profile' %}">{{ user.username }}</a>
+                    {% else %}
+                        <a class="ui inverted button" href="{% url 'UrTourn.views.userLogin' %}">Log in</a>
+                        <a class="ui inverted button" href="{% url 'UrTourn.views.signup' %}">Sign Up</a>
+                    {% endif %} 
+                    </div>
+                </div>
+            </div>
+            <div class="ui text container">
+                <h1 class="ui inverted purple header">
+                    Upcoming Tournaments
+                </h1>
+                <h2>
+                    Do you have what it takes?
+                </h2>
+                <div class="ui purple button">
+                    Find out!<i class="right arrow icon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column">
+                        <h3 class="ui header">
+                            We assist in organizing amateur gaming tournaments!
+                        </h3>
+                        <p>
+                            We can help promote your business as a spot to that gamers can meet up for the tournament.
+                        </p>
+                        <h3 class="ui header">
+                            We bring a new twist to tournament organizing.
+                        </h3>
+                        <p>
+                            Yes that's right, you thought it was just organizing tournaments but you can meet friends
+                            too!
+                        </p>
+                    </div>
+                    <div class="six wide right floated column">
+                        <img class="ui large bordered rounded image" src="/static/images />
+          </div>
+        </div>
+        <div class="
+                            row">
+                        <div class="center aligned column">
+                            <a class="ui huge purple button">Check It Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui vertical stripe segment">
+                <div class="ui text container">
+                    <h3 class="ui header">
+                        Breaking The Boundaries, Just like our users!
+                    </h3>
+                    <p>
+                        We allow the users to review tournament organizers, organize their own, post to a newsfeed and
+                        make friends!
+                        Organizers are allowed to post their place of operation for use!
+                    </p>
+                    <a class="ui large purple button">Read More</a>
+                    <h4 class="ui horizontal header divider">
+                        <a href="homepage.html#"></a>
+                    </h4>
+                </div>
+            </div>
+            <div class="ui inverted vertical footer segment">
+                <div class="ui container">
+                    <div class="ui stackable inverted divided equal height stackable grid">
+                        <div class="three wide column">
+                            <h4 class="ui inverted purple header">
+                                About
+                            </h4>
+                            <div class="ui inverted link list">
+                                <a class="item" href="homepage.html#"> Sitemap</a><a class="item" href="homepage.html#">
+                                    Contact Us</a><a class="item" href="homepage.html#"> Misc</a><a class="item" href="homepage.html#">
+                                    random</a>
+                            </div>
+                        </div>
+                        <div class="three wide column">
+                            <h4 class="ui purple inverted header">
+                                Services
+                            </h4>
+                            <div class="ui inverted link list">
+                                <a class="item" href="homepage.html#"> Blah Blah</a><a class="item" href="homepage.html#">
+                                    Blah Blah</a><a class="item" href="homepage.html#"> Blehhhh</a><a class="item" href="homepage.html#">
+                                    Favorite X-Men</a>
+                            </div>
+                        </div>
+                        <div class="seven wide column">
+                            <h4 class="ui inverted purple header">
+                                Information
+                            </h4>
+                            <p>
+                                User Agreement
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="../../static/dist/semantic-ui/semantic.min.js"></script>
+        <style type="text/css">
+            .hidden.menu {
+                display: none;
+            }
+
+            .masthead.segment {
+                min-height: 600px;
+                padding: 1em 0em;
+            }
+
+            .masthead .logo.item img {
+                margin-right: 1em;
+            }
+
+            .masthead .ui.menu .ui.button {
+                margin-left: 0.5em;
+            }
+
+            .masthead h1.ui.header {
+                margin-top: 2em;
+                margin-bottom: 0em;
+                font-size: 4em;
+                font-weight: normal;
+            }
+
+            .masthead h2 {
+                font-size: 1.7em;
+                font-weight: normal;
+            }
+
+            .ui.vertical.stripe {
+                padding: 8em 0em;
+            }
+
+            .ui.vertical.stripe h3 {
+                font-size: 2em;
+            }
+
+            .ui.vertical.stripe .button+h3,
+            .ui.vertical.stripe p+h3 {
+                margin-top: 3em;
+            }
+
+            .ui.vertical.stripe .floated.image {
+                clear: both;
+            }
+
+            .ui.vertical.stripe p {
+                font-size: 1.33em;
+            }
+
+            .ui.vertical.stripe .horizontal.divider {
+                margin: 3em 0em;
+            }
+
+            .quote.stripe.segment {
+                padding: 0em;
+            }
+
+            .quote.stripe.segment .grid .column {
+                padding-top: 5em;
+                padding-bottom: 5em;
+            }
+
+            .footer.segment {
+                padding: 5em 0em;
+            }
+
+            .secondary.pointing.menu .toc.item {
+                display: none;
+            }
+
+            @media only screen and (max-width: 700px) {
+                .ui.fixed.menu {
+                    display: none !important;
+                }
+
+                .secondary.pointing.menu .item,
+                .secondary.pointing.menu .menu {
+                    display: none;
+                }
+
+                .secondary.pointing.menu .toc.item {
+                    display: block;
+                }
+
+                .masthead.segment {
+                    min-height: 350px;
+                }
+
+                .masthead h1.ui.header {
+                    font-size: 2em;
+                    margin-top: 1.5em;
+                }
+
+                .masthead h2 {
+                    margin-top: 0.5em;
+                    font-size: 1.5em;
+                }
+            }
+        </style>
+        <script>
+            $(document)
+                .ready(function () {
+                    // fix menu when passed
+                    $('.masthead')
+                        .visibility({
+                            once: false,
+                            onBottomPassed: function () {
+                                $('.fixed.menu').transition('fade in');
+                            },
+                            onBottomPassedReverse: function () {
+                                $('.fixed.menu').transition('fade out');
+                            }
+                        })
+                        ;
+
+                    // create sidebar and attach to menu open
+                    $('.ui.sidebar')
+                        .sidebar('attach events', '.toc.item')
+                        ;
+                })
+                ;
+        </script>
+</body>
+
+</html>

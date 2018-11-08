@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
 def home(request):
-   return render(request, "home.html")
+   return render(request, "homepage.html", {'request' : request})
  
 def userLogin(request):
     if request.method == 'POST':
