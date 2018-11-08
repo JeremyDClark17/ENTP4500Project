@@ -21,11 +21,30 @@
           <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
           <div class="right item">
           {% if request.user.is_authenticated %}
-          {% if currentUser != user %}
-            <a class="ui inverted button" href="{% url 'UrTourn.views.profile' %}">{{ currentUser.username }}</a>
-          {% else %}
-            <a class="ui button" href="{% url 'UrTourn.views.profile' %}">{{ currentUser.username }}</a>
-          {% endif %}
+            <div class="ui simple dropdown item">
+            {% if currentUser = user %}
+              <a href="{% url 'UrTourn.views.profile' %}"><b>{{ currentUser.username }}</b></a><i class="dropdown icon"></i>
+            {% else %}
+              <a href="{% url 'UrTourn.views.profile' %}">{{ currentUser.username }}</a><i class="dropdown icon"></i>
+            {% endif %}
+              <div class="floating ui red label">!</div>
+              <div class="menu">
+                <a class="item">
+                  <i class="bell icon"></i> Notifications
+                  <div class="floating ui red label">!</div>
+                </a>
+                <a class="item">
+                  <i class="envelope icon"></i> Messages
+                  <div class="floating ui red label">!</div>
+                </a>
+                <a class="item">
+                  <i class="settings icon"></i> Settings
+                </a>
+                <a class="item" href="{% url 'UrTourn.views.userLogout' %}">
+                  <i class="sign-out icon"></i> Log Out
+                </a>
+              </div>
+            </div>
           {% else %}
             <a class="ui inverted button" href="{% url 'UrTourn.views.userLogin' %}">Log in</a>
             <a class="ui inverted button" href="{% url 'UrTourn.views.signup' %}">Sign Up</a>
