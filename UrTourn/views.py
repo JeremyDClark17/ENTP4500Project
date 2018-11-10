@@ -1,8 +1,8 @@
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, ProfileForm, TournamentForm
-from .models import Tournament
+from .forms import SignUpForm, ProfileForm, TournamentForm, MessageForm
+from .models import Tournament, Message
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
@@ -12,7 +12,11 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
 def home(request):
-   return render(request, "homepage.html", {'request' : request})
+   if request.user.is_authenticated():
+       newMessages = doesUserHaveNewMessage(request)
+   else:
+       newMessages = False
+   return render(request, "homepage.html", {'request' : request, 'newMessages' : newMessages})
  
 def userLogin(request):
     if request.method == 'POST':
@@ -55,7 +59,8 @@ def profiles(request, Username):
         #if user is on another profile and if they are following that person, mark True
         if currentUser != user and currentUser in user.profile.followers.all():
           following = True
-        context = {'user' : user, 'currentUser' : currentUser, 'followers' : followers, 'following' : following}
+        newMessages = doesUserHaveNewMessage(request)
+        context = {'user' : user, 'currentUser' : currentUser, 'followers' : followers, 'following' : following, 'newMessages' : newMessages}
         return HttpResponse(template.render(context, request))
     except User.DoesNotExist:
         return redirect(signup)
@@ -126,7 +131,8 @@ def tournament(request, index):
     if request.user.id == tournament.host.id:
       userHost = True
     template = loader.get_template("tournament.html")
-    context = {'tournament' : tournament, 'count' : count, 'userStatus' : userStatus, 'tournamentJoinable' : tournamentJoinable, 'userHost' : userHost, 'user' : request.user}
+    newMessages = doesUserHaveNewMessage(request)
+    context = {'tournament' : tournament, 'count' : count, 'userStatus' : userStatus, 'tournamentJoinable' : tournamentJoinable, 'userHost' : userHost, 'user' : request.user, 'newMessages' : newMessages}
     return HttpResponse(template.render(context, request))
 
 def tournaments(request):
@@ -139,7 +145,8 @@ def tournaments(request):
             Q(tournament_type__icontains=query)|
             Q(host__username__icontains=query))
     template = loader.get_template("tournamentsHome.html")
-    context = {'tournaments' : tournaments, 'user' : request.user}
+    newMessages = doesUserHaveNewMessage(request)
+    context = {'tournaments' : tournaments, 'user' : request.user, 'newMessages' : newMessages}
     return HttpResponse(template.render(context, request))
 
 def create_tournament(request):
@@ -209,5 +216,84 @@ def players(request):
                 Q(profile__gamertag__icontains=query)|
                 Q(profile__favorite_games__icontains=query))
     template = loader.get_template("players.html")
-    context = {'players' : players, 'user' : request.user}
+    newMessages = doesUserHaveNewMessage(request)
+    context = {'players' : players, 'user' : request.user, 'newMessages' : newMessages}
     return HttpResponse(template.render(context, request))
+
+def messages(request):
+    messages = Message.objects.all()
+    inboxCount = messages.filter(receiver = request.user).count()
+    sentCount = messages.filter(sender = request.user).count()
+    query = request.GET.get("q")
+    if query:
+        if query == "inbox":
+            messages = messages.filter(receiver = request.user).order_by('-created_at')
+        elif query == "sent":
+            messages = messages.filter(sender = request.user).order_by('-created_at')
+        else:
+            messages = messages.filter(
+                Q(sender__username__icontains=query)|
+                Q(receiver__username__icontains=query)|
+                Q(msg_content__icontains=query)).order_by('-created_at')
+    else:
+        messages = messages.filter(receiver = request.user)
+    template = loader.get_template("messages.html")
+    context = {'messages' : messages, 'user' : request.user, 'inboxCount' : inboxCount, 'sentCount' : sentCount}
+    return HttpResponse(template.render(context, request))
+
+def message(request, index):
+    messages = Message.objects.all()
+    message = Message.objects.get(id=index)
+    message.read = True
+    message.save()
+    template = loader.get_template("message.html")
+    inboxCount = messages.filter(receiver = request.user).count()
+    sentCount = messages.filter(sender = request.user).count()
+    context = {'message' : message, 'user' : request.user, 'inboxCount' : inboxCount, 'sentCount' : sentCount}
+    return HttpResponse(template.render(context, request))
+
+def doesUserHaveNewMessage(request):
+    try:
+        if Message.objects.filter(read=False).count() > 0:
+            return True
+        else:
+            return False
+    except Message.DoesNotExist:
+        return False
+
+def create_message(request):
+    form = MessageForm(request.POST)
+    if request.method == 'POST':
+      if form.is_valid():
+        message = form.save(commit=False)
+        message.sender = request.user
+        message.msg_content = form.cleaned_data['message']
+        try:
+            message.receiver = User.objects.get(username = form.cleaned_data['to'])
+            message.save()
+            return redirect(messages)
+        except User.DoesNotExist:
+            return render(request, "create_message.html", {'form' : form})
+      else:
+        return render(request, "create_message.html", {'form' : form})
+    else:
+      return render(request, "create_message.html", {'form' : form})
+
+def reply_message(request, index):
+    message = Message.objects.get(id=index)
+    form = MessageForm({'to': message.sender.username, 'subject': 'RE: ' + message.subject})
+    if request.method == 'POST':
+      if form.is_valid():
+        newMessage = form.save(commit=False)
+        newMessage.sender = request.user
+        newMessage.msg_content = form.cleaned_data['message']
+        try:
+            newMessage.receiver = User.objects.get(username = form.cleaned_data['to'])
+            newMessage.save()
+            return redirect(messages)
+        except User.DoesNotExist:
+            return render(request, "create_message.html", {'form' : form})
+      else:
+        return render(request, "create_message.html", {'form' : form})
+    else:
+      return render(request, "create_message.html", {'form' : form})

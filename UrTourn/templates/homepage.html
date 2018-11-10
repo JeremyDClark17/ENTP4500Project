@@ -35,9 +35,11 @@
                               <i class="bell icon"></i> Notifications
                               <div class="floating ui red label">!</div>
                             </a>
-                            <a class="item">
+                            <a class="item" href="{% url 'UrTourn.views.messages' %}?q=inbox">
                               <i class="envelope icon"></i> Messages
+                               {% if newMessages = True %}
                               <div class="floating ui red label">!</div>
+                              {% endif %}
                             </a>
                             <a class="item">
                               <i class="settings icon"></i> Settings

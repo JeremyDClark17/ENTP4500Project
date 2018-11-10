@@ -45,7 +45,12 @@ class Tournament(models.Model):
 	return self.name
 
 class Message(models.Model):
-     sender = models.ForeignKey(User, related_name="sender")
-     reciever = models.ForeignKey(User, related_name="receiver")
-     msg_content = models.TextField()
-     created_at = models.DateTimeField(auto_now=True)
+    subject = models.CharField(max_length=40)
+    sender = models.ForeignKey(User, related_name="sender")
+    receiver = models.ForeignKey(User, related_name="receiver")
+    msg_content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.subject

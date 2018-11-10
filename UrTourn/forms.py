@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from UrTourn.models import Profile, Tournament
+from UrTourn.models import Profile, Tournament, Message
 from django.utils import timezone
 
 class SignUpForm(UserCreationForm):
@@ -38,3 +38,12 @@ class TournamentForm(forms.ModelForm):
     class Meta:
 	model = Tournament
 	fields = ('name', 'start_day', 'start_time', 'game', 'tournament_type', 'size', 'description')
+
+class MessageForm(forms.ModelForm):
+    subject = forms.CharField(max_length=40, required=False)
+    to = forms.CharField(max_length=40, required=True)
+    message = forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "80", 'rows': "20"}), required=False)
+    
+    class Meta:
+        model = Message
+        fields = ('to' , 'subject', 'message')
