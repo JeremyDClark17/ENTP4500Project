@@ -84,7 +84,7 @@
            <div class="ui vertical buttons">
            {% if user != currentUser %}
              <div class="item">
-               <a class="ui labeled icon black button" href="https://google.com">
+               <a class="ui labeled icon black button" href="{% url 'UrTourn.views.create_message' %}">
                  <i class="envelope icon"></i>
                  Message
                </a>

@@ -281,7 +281,7 @@ def create_message(request):
 
 def reply_message(request, index):
     message = Message.objects.get(id=index)
-    form = MessageForm({'to': message.sender.username, 'subject': 'RE: ' + message.subject})
+    form = MessageForm(initial={'to': message.sender.username, 'subject': 'RE: ' + message.subject})
     if request.method == 'POST':
       if form.is_valid():
         newMessage = form.save(commit=False)
@@ -290,6 +290,24 @@ def reply_message(request, index):
         try:
             newMessage.receiver = User.objects.get(username = form.cleaned_data['to'])
             newMessage.save()
+            return redirect(messages)
+        except User.DoesNotExist:
+            return render(request, "create_message.html", {'form' : form})
+      else:
+        return render(request, "create_message.html", {'form' : form})
+    else:
+      return render(request, "create_message.html", {'form' : form})
+
+def new_message(request, profile):
+    form = MessageForm({'to': profile})
+    if request.method == 'POST':
+      if form.is_valid():
+        message = form.save(commit=False)
+        message.sender = request.user
+        message.msg_content = form.cleaned_data['message']
+        try:
+            message.receiver = User.objects.get(username = form.cleaned_data['to'])
+            message.save()
             return redirect(messages)
         except User.DoesNotExist:
             return render(request, "create_message.html", {'form' : form})

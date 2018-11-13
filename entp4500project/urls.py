@@ -43,4 +43,5 @@ urlpatterns = [
     url(r'^messages/(?P<index>\d{1,36})/$', 'UrTourn.views.message', name = 'message'),
     url(r'^create_message/$', 'UrTourn.views.create_message', name = 'create_message'),
     url(r'^reply_message/(?P<index>\d{1,36})/$', 'UrTourn.views.reply_message', name = 'reply_message'),
+    url(r'^new_message/(?P<profile>[\w.@+\- ]+)$', 'UrTourn.views.new_message', name = 'new_message'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
