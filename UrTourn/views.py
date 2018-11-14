@@ -146,15 +146,13 @@ def social_media(request):
         		stories = SocialMedia.objects.all()
         		"""text = social_media_form.cleaned_data['story']"""
           		social_media_form = SocialMediaForm(instance = request.user)
-          		messages.success(request, ('Your story was successfully posted!'))
         		return render(request, "social_media.html", {'social_media_form':social_media_form, 'stories': stories})
             else:
-                messages.error(request, ('An error occurred, please try again.'))
-                print('fail')
+                return render(request, "social_media.html", {'social_media_form':social_media_form, 'stories': stories})
         else:
             stories = SocialMedia.objects.all()
             social_media_form = SocialMediaForm(instance = request.user)
-            args = {'social_media_form': social_media_form, 'stories': stories}
+            args = {'social_media_form': social_media_form, 'stories': stories, 'user' : request.user}
         
 	    
             return render(request, "social_media.html", args)

@@ -15,7 +15,7 @@
       <div class="ui container">
         <div class="ui large secondary inverted pointing menu">
           <a class="item" href="{% url 'UrTourn.views.home' %}">Home</a>
-          <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Social Media</a>
+          <a class="item" href="{% url 'UrTourn.views.social_media' %}">Social Media</a>
           <a class="item" href="{% url 'UrTourn.views.players' %}">Players</a>
           <a class="item" href="{% url 'UrTourn.views.players' %}">Teams</a>
           <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
@@ -57,18 +57,6 @@
     </div>
   </div>
   <br>
-    <div class="ui inverted menu">
-       <div class="left menu">
-         <a class="ui purple large header" href="/">URTOURN.GG</a>
-       </div>
-       <div class="right menu">
-         <a href="{% url 'UrTourn.views.social_media' %}"><button class="ui inverted grey button">Social Media</button></a>
-         <a href="{% url 'UrTourn.views.players' %}"><button class="ui inverted grey button">Players</button></a>
-         <a href="/"><button class="ui inverted grey button">Teams</button></a>
-         <a href="{% url 'UrTourn.views.tournaments' %}"><button class="ui inverted grey button">Tournaments</button></a>
-         <a href="{% url 'UrTourn.views.profile' %}"><button class="ui purple button">Profile</button></a>
-       </div>
-     </div>
      <div class="ui container">
        <div class="ui grid">
          <div class="twelve wide column">

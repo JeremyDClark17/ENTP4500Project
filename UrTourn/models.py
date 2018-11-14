@@ -54,13 +54,11 @@ class Message(models.Model):
 
     def __str__(self):
         return self.subject
-     sender = models.ForeignKey(User, related_name="sender")
-     reciever = models.ForeignKey(User, related_name="receiver")
-     msg_content = models.TextField()
-     created_at = models.DateTimeField(auto_now=True)
 
 class SocialMedia(models.Model):
     story = models.TextField(max_length=500, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     date = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.story
