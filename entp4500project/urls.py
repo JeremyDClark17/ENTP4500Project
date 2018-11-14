@@ -1,4 +1,4 @@
-"""entp4500project URL Configuration
+"""ENTP4500PROject URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^u/(?P<Username>[\w.@+\- ]+)/unfollow/$', 'UrTourn.views.unfollow', name = 'unfollow'),
     url(r'^update_profile/$', 'UrTourn.views.update_profile', name = 'update'),
     url(r'^delete_profile/$', 'UrTourn.views.delete_profile', name = 'delete'),
+    url(r'^social_media/$', 'UrTourn.views.social_media', name = 'social_media'),
     url(r'^tournaments/$', 'UrTourn.views.tournaments', name = 'tournaments'),
     url(r'^tournaments/(?P<index>\S{36})/$', 'UrTourn.views.tournament', name = 'tournament'),
     url(r'^tournaments/(?P<index>\S{36})/join$', 'UrTourn.views.join_tournament', name = 'join_tournament'),

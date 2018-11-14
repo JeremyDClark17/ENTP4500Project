@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <title>UrTourn</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.css">
+    <link rel="stylesheet" href="{% static 'css/playerProfile.css' %}">
+</head>
+<body>
+    <div>
+        <div class="ui inverted menu">
+            <div class="left menu">
+                <a class="ui purple large header" href="/">URTOURN.GG</a>
+            </div>
+            <div class="right menu">
+                <a href="{% url 'UrTourn.views.social_media' %}"><button class="ui grey button">Social Media</button></a>
+                <a href="{% url 'UrTourn.views.players' %}"><button class="ui inverted grey button">Players</button></a>
+                <a href="/"><button class="ui inverted grey button">Teams</button></a>
+                <a href="{% url 'UrTourn.views.tournaments' %}"><button class="ui inverted grey button">Tournaments</button></a>
+                <a href="{% url 'UrTourn.views.profile' %}"><button class="ui inverted purple button">Profile</button></a>
+            </div>
+        </div>
+    </div>
+    <br>
+  <div class="login">
+    <form method="post" enctype = "multipart/form-data">
+      {% csrf_token %}
+    {% for field in social_media_form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <button type="submit">Post Story</button>
+  <div class="login">
+</form>
+  <h2>{{text}}</h2>
+  {% for story in stories %}
+     <h1>{{ story.story }}</h2>
+     <p>{{ story.date }}</p>
+     <p>{{ story.user }}</p>
+  {% endfor %}
+</body>

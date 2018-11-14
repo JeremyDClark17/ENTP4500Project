@@ -49,3 +49,9 @@ class Message(models.Model):
      reciever = models.ForeignKey(User, related_name="receiver")
      msg_content = models.TextField()
      created_at = models.DateTimeField(auto_now=True)
+
+class SocialMedia(models.Model):
+    story = models.TextField(max_length=500, blank=True)
+    user = models.ForeignKey(User)   
+    date = models.DateTimeField(auto_now=True)
+
