@@ -110,13 +110,13 @@ def update_profile(request):
 
 def social_media(request):
     template_name = 'social_media.html'
-    form = SocialMediaForm(request.POST, request.FILES, instance = request.user.profile)
+    """form = SocialMediaForm(request.POST, request.FILES, instance = request.user.profile)"""
             
     
     if request.user.is_authenticated():
         if request.method == 'POST':
-            if form.is_valid():
-                """story = form.save(commit=False)
+            """if form.is_valid():
+                story = form.save(commit=False)
                 story.user = request.user
                 story.save()
                 
@@ -131,21 +131,22 @@ def social_media(request):
             stories = SocialMedia.objects.all()
             return render(request, template_name, {'form':form})
             """
-            social_media_form = SocialMediaForm(request.POST, request.FILES, instance = request.user.profile)
+            social_media_form = SocialMediaForm(request.POST)
     	    if social_media_form.is_valid():
-        		story = social_media_form.save()
+        		story = social_media_form.save(commit=False)
         		story.user = request.user
         		story.save()
         		stories = SocialMedia.objects.all()
-        		text = social_media_form.cleaned_data['story']
-          		social_media_form = SocialMediaForm(instance = request.user.profile)
+        		"""text = social_media_form.cleaned_data['story']"""
+          		social_media_form = SocialMediaForm(instance = request.user)
           		messages.success(request, ('Your story was successfully posted!'))
         		return render(request, "social_media.html", {'social_media_form':social_media_form, 'stories': stories})
             else:
                 messages.error(request, ('An error occurred, please try again.'))
+                print('fail')
         else:
             stories = SocialMedia.objects.all()
-            social_media_form = SocialMediaForm(instance = request.user.profile)
+            social_media_form = SocialMediaForm(instance = request.user)
             args = {'social_media_form': social_media_form, 'stories': stories}
         
 	    

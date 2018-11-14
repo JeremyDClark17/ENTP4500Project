@@ -52,6 +52,6 @@ class Message(models.Model):
 
 class SocialMedia(models.Model):
     story = models.TextField(max_length=500, blank=True)
-    user = models.ForeignKey(User)   
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     date = models.DateTimeField(auto_now=True)
 
