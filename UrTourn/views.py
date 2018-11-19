@@ -1,3 +1,4 @@
+import os.path
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -293,10 +294,11 @@ def message(request, index):
     message = Message.objects.get(id=index)
     message.read = True
     message.save()
+    fileExt = os.path.splitext(message.attachment.name)[1][1:]
     template = loader.get_template("message.html")
     inboxCount = messages.filter(receiver = request.user).count()
     sentCount = messages.filter(sender = request.user).count()
-    context = {'message' : message, 'user' : request.user, 'inboxCount' : inboxCount, 'sentCount' : sentCount}
+    context = {'message' : message, 'user' : request.user, 'inboxCount' : inboxCount, 'sentCount' : sentCount, 'fileExt' : fileExt}
     return HttpResponse(template.render(context, request))
 
 def doesUserHaveNewMessage(request):
@@ -309,20 +311,27 @@ def doesUserHaveNewMessage(request):
         return False
 
 def create_message(request):
-    form = MessageForm(request.POST)
+    form = MessageForm(request.POST, request.FILES)
     if request.method == 'POST':
       if form.is_valid():
         message = form.save(commit=False)
         message.sender = request.user
         message.msg_content = form.cleaned_data['message']
+        message.attachment = form.cleaned_data['attachment']
+        #if validate_file_extension(message.attachment.name) == True
+        #else:
+            #error = "Attempted to upload unsupported file format"
+            #return render(request, "create_message.html", {'form' : form, 'error' : error})
         try:
             message.receiver = User.objects.get(username = form.cleaned_data['to'])
             message.save()
             return redirect(messages)
         except User.DoesNotExist:
-            return render(request, "create_message.html", {'form' : form})
+            error = "Username does not exist"
+            return render(request, "create_message.html", {'form' : form, 'error' : error})
       else:
-        return render(request, "create_message.html", {'form' : form})
+        error = "Please edit form and try again"
+        return render(request, "create_message.html", {'form' : form, 'error' : error})
     else:
       return render(request, "create_message.html", {'form' : form})
 
@@ -362,3 +371,12 @@ def new_message(request, profile):
         return render(request, "create_message.html", {'form' : form})
     else:
       return render(request, "create_message.html", {'form' : form})
+      
+def validate_file_extension(fileName):
+    import os
+    ext = os.path.splitext(fileName)[1]
+    valid_extensions = ['.jpg','.png','.gif', '.mp4', '.mov', '.avi', '.wmv']
+    if ext in valid_extensions:
+        return True
+    else:
+        return False

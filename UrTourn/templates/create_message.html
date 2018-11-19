@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{% static 'css/createTournament.css' %}">
   </head>
   <div class="login">
-  <form method="post">
+  <form method="post" enctype = "multipart/form-data">
     {% csrf_token %}
     {% for field in form %}
       <p>
@@ -17,6 +17,9 @@
         {% endfor %}
       </p>
     {% endfor %}
+    {% if error %}
+      <p style="color: red">{{ error }}</p><br>
+    {% endif %}
     <button type="submit">Send Message</button>
   </form>
   <br><br>

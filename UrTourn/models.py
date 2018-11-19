@@ -45,15 +45,15 @@ class Tournament(models.Model):
 	return self.name
 
 class Message(models.Model):
-    subject = models.CharField(max_length=40)
     sender = models.ForeignKey(User, related_name="sender")
     receiver = models.ForeignKey(User, related_name="receiver")
     msg_content = models.TextField()
+    attachment =  models.FileField(upload_to='messages/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.subject
+        return self.sender.username
 
 class SocialMedia(models.Model):
     story = models.TextField(max_length=500, blank=True)

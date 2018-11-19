@@ -89,11 +89,17 @@
             </div>
             <div class="twelve wide column">
               <h4><a href="{% url 'UrTourn.views.profiles' Username=message.sender.username %}">{{ message.sender }}</a></h4>
-              <h5>{{ message.subject }}</h5>
               <h5>{{ message.created_at }}</h5> 
             </div>
           </div>
           <br><p>{{ message.msg_content }}</p>
+          {% if fileExt == 'jpg' or fileExt == 'gif' or fileExt == 'png' %}
+          <img class="ui fluid image" src="{{ message.attachment.url }}">
+          {% else %}
+          <video width="100%" controls>
+            <source src="{{ message.attachment.url }}" type="video/{{ fileExt }}">
+          </video><br>
+          {% endif %}
           <br><a class="ui labeled icon purple button" href="{% url 'UrTourn.views.create_message' %}">
             <i class="reply icon"></i>
             Reply
