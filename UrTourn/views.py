@@ -106,10 +106,9 @@ def update_profile(request):
             profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
             if profile_form.is_valid():
                 profile_form.save()
-                messages.success(request, ('Your profile was successfully updated!'))
                 return redirect(profile)
             else:
-                messages.error(request, ('Please correct the error(s) below.'))
+                return render(request, "update_profile.html", {'profile_form' : profile_form})
         else:
             profile_form = ProfileForm(instance=request.user.profile)
         return render(request, "update_profile.html", {'profile_form' : profile_form})
@@ -204,10 +203,8 @@ def create_tournament(request):
         tourney = form.save(commit=False)
         tourney.host = request.user
         tourney.save()
-        messages.success(request, ('Your tournament was successfully created!'))
         return redirect(tournaments)
       else:
-        messages.error(request, ('Please correct the error(s) below'))
         return render(request, "create_tournament.html", {'form' : form})
     else:
       return render(request, "create_tournament.html", {'form' : form})
@@ -219,10 +216,9 @@ def edit_tournament(request, index):
             tournament_form = TournamentForm(request.POST, request.FILES, instance=tournament)
             if tournament_form.is_valid():
                 tournament_form.save()
-                messages.success(request, ('Your tournament was successfully updated!'))
                 return redirect(tournaments)
             else:
-                messages.error(request, ('Please correct the error(s) below.'))
+                return render(request, "edit_tournament.html", {'form' : tournament_form})
         else:
             tournament_form = TournamentForm(instance=tournament)
         return render(request, "edit_tournament.html", {'form' : tournament_form})

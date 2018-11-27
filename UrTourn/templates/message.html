@@ -17,7 +17,6 @@
           <a class="item" href="{% url 'UrTourn.views.home' %}">Home</a>
           <a class="item" href="{% url 'UrTourn.views.social_media' %}">Social Media</a>
           <a class="item" href="{% url 'UrTourn.views.players' %}">Players</a>
-          <a class="item" href="{% url 'UrTourn.views.players' %}">Teams</a>
           <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
           <div class="right item">
           {% if user.is_authenticated %}
@@ -93,12 +92,14 @@
             </div>
           </div>
           <br><p>{{ message.msg_content }}</p>
+          {% if message.attachment %}
           {% if fileExt == 'jpg' or fileExt == 'gif' or fileExt == 'png' %}
           <img class="ui fluid image" src="{{ message.attachment.url }}">
           {% else %}
           <video width="100%" controls>
             <source src="{{ message.attachment.url }}" type="video/{{ fileExt }}">
           </video><br>
+          {% endif %}
           {% endif %}
           <br><a class="ui labeled icon purple button" href="{% url 'UrTourn.views.create_message' %}">
             <i class="reply icon"></i>

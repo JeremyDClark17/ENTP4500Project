@@ -17,7 +17,6 @@
           <a class="item" href="{% url 'UrTourn.views.home' %}">Home</a>
           <a class="item" href="{% url 'UrTourn.views.social_media' %}">Social Media</a>
           <a class="item" href="{% url 'UrTourn.views.players' %}">Players</a>
-          <a class="item" href="{% url 'UrTourn.views.players' %}">Teams</a>
           <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
           <div class="right item">
           {% if request.user.is_authenticated %}
@@ -66,7 +65,7 @@
                {% if user.profile.profile_image %}
                  <img class="ui image" src="{{MEDIA_ROOT}}{{user.profile.profile_image.url}}" alt="">
                {% else %}
-                 <p>NO IMAGE</p>
+                 <img class="ui image" src="/media/profile_images/noPhoto.jpg" alt="">
                {% endif %}
                </div>
                <div class="twelve wide column">

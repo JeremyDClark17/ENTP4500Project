@@ -23,7 +23,6 @@
                     <a class="active item" href="{% url 'UrTourn.views.home' %}">Home</a>
                     <a class="item" href="{% url 'UrTourn.views.social_media' %}">Social Media</a>
                     <a class="item" href="{% url 'UrTourn.views.players' %}">Players</a>
-                    <a class="item" href="{% url 'UrTourn.views.players' %}">Teams</a>
                     <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
                     <div class="right item">
                     {% if request.user.is_authenticated %}
@@ -64,7 +63,7 @@
                     Do you have what it takes?
                 </h2>
                 <div class="ui purple button">
-                    Find out!<i class="right arrow icon"></i>
+                    <a href="{% url 'UrTourn.views.signup' %}" style="color:white">Find out!<i class="right arrow icon"></i></a>
                 </div>
             </div>
         </div>
@@ -87,13 +86,13 @@
                         </p>
                     </div>
                     <div class="six wide right floated column">
-                        <img class="ui large bordered rounded image" src="/static/images />
+                        <img class="ui large bordered rounded image" src="/media/UrTournHome.jpg">
           </div>
         </div>
         <div class="
                             row">
                         <div class="center aligned column">
-                            <a class="ui huge purple button">Check It Out</a>
+                            <a class="ui huge purple button" href="{% url 'UrTourn.views.tournaments' %}">Check It Out</a>
                         </div>
                     </div>
                 </div>
@@ -122,9 +121,9 @@
                                 About
                             </h4>
                             <div class="ui inverted link list">
-                                <a class="item" href="homepage.html#"> Sitemap</a><a class="item" href="homepage.html#">
-                                    Contact Us</a><a class="item" href="homepage.html#"> Misc</a><a class="item" href="homepage.html#">
-                                    random</a>
+                                <a class="item" href="homepage.html#"> More</a><a class="item" href="homepage.html#">
+                                    to come</a><a class="item" href="homepage.html#"> in</a><a class="item" href="homepage.html#">
+                                    the future</a>
                             </div>
                         </div>
                         <div class="three wide column">
@@ -132,9 +131,9 @@
                                 Services
                             </h4>
                             <div class="ui inverted link list">
-                                <a class="item" href="homepage.html#"> Blah Blah</a><a class="item" href="homepage.html#">
-                                    Blah Blah</a><a class="item" href="homepage.html#"> Blehhhh</a><a class="item" href="homepage.html#">
-                                    Favorite X-Men</a>
+                                <a class="item" href="homepage.html#"> More</a><a class="item" href="homepage.html#">
+                                    to come</a><a class="item" href="homepage.html#"> in</a><a class="item" href="homepage.html#">
+                                    the future</a>
                             </div>
                         </div>
                         <div class="seven wide column">

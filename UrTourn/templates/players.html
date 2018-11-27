@@ -17,10 +17,9 @@
           <a class="item" href="{% url 'UrTourn.views.home' %}">Home</a>
           <a class="item" href="{% url 'UrTourn.views.social_media' %}">Social Media</a>
           <a class="active item" href="{% url 'UrTourn.views.players' %}">Players</a>
-          <a class="item" href="{% url 'UrTourn.views.players' %}">Teams</a>
           <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
           <div class="right item">
-          {% if request.user.is_authenticated %}
+          {% if user.is_authenticated %}
             <div class="ui simple dropdown item">
               <a href="{% url 'UrTourn.views.profile' %}">{{ user.username }}</a><i class="dropdown icon"></i>
               <div class="floating ui red label">!</div>
@@ -42,17 +41,6 @@
                   <i class="sign-out icon"></i> Log Out
                 </a>
               </div>
-    <div>
-        <div class="ui inverted menu">
-            <div class="left menu">
-                <a class="ui purple large header" href="/">URTOURN.GG</a>
-            </div>
-            <div class="right menu">
-                <a href="{% url 'UrTourn.views.social_media' %}"><button class="ui inverted grey button">Social Media</button></a>
-                <a href="{% url 'UrTourn.views.players' %}"><button class="ui grey button">Players</button></a>
-                <a href="/"><button class="ui inverted grey button">Teams</button></a>
-                <a href="{% url 'UrTourn.views.tournaments' %}"><button class="ui inverted grey button">Tournaments</button></a>
-                <a href="{% url 'UrTourn.views.profile' %}"><button class="ui inverted purple button">Profile</button></a>
             </div>
           {% else %}
             <a class="ui inverted button" href="{% url 'UrTourn.views.userLogin' %}">Log in</a>
@@ -63,7 +51,7 @@
       </div>
     </div>
   </div>
-  <br>
+ <br>
     <form method='GET' action=''>
       <input type='text' name='q' placeholder='Search...' />
     </form> 
@@ -80,20 +68,31 @@
     {% for player in players %}
     <tr>
       <td>
-      {% if user.profile.profile_image %}
+      {% if player.profile.profile_image %}
         <a href="{% url 'UrTourn.views.profiles' Username=player.username %}">
           <img class="ui image" src="{{MEDIA_ROOT}}{{player.profile.profile_image.url}}" alt="" width=150px>
           <h3>{{ player.username }}</h3>
         </a>
       {% else %}
-        <a href="{% url 'UrTourn.views.profiles' Username=player.username %}">{{ player.username }}</a>
+                <a href="{% url 'UrTourn.views.profiles' Username=player.username %}">
+          <img class="ui image" src="/media/profile_images/noPhoto.jpg" alt="" width=150px>
+          <h3>{{ player.username }}</h3>
+        </a>
       {% endif %}
       </td>
       <td>
+        {% if player.profile.gamertag %}
         {{ player.profile.gamertag }}
+        {% else %}
+        None
+        {% endif %}
       </td>
       <td>
+        {% if player.profile.favorite_games %}
         {{ player.profile.favorite_games }}
+        {% else %}
+        None
+        {% endif %}
       </td>
     </tr>
     {% endfor %}
