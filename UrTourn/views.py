@@ -1,4 +1,3 @@
-import os.path
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -106,9 +105,10 @@ def update_profile(request):
             profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
             if profile_form.is_valid():
                 profile_form.save()
+                messages.success(request, ('Your profile was successfully updated!'))
                 return redirect(profile)
             else:
-                return render(request, "update_profile.html", {'profile_form' : profile_form})
+                messages.error(request, ('Please correct the error(s) below.'))
         else:
             profile_form = ProfileForm(instance=request.user.profile)
         return render(request, "update_profile.html", {'profile_form' : profile_form})
@@ -143,14 +143,14 @@ def social_media(request):
         		story = social_media_form.save(commit=False)
         		story.user = request.user
         		story.save()
-        		stories = SocialMedia.objects.all()
+        		stories = SocialMedia.objects.all().order_by('-created')
         		"""text = social_media_form.cleaned_data['story']"""
           		social_media_form = SocialMediaForm(instance = request.user)
         		return render(request, "social_media.html", {'social_media_form':social_media_form, 'stories': stories})
             else:
                 return render(request, "social_media.html", {'social_media_form':social_media_form, 'stories': stories})
         else:
-            stories = SocialMedia.objects.all()
+            stories = SocialMedia.objects.all().order_by('-created')
             social_media_form = SocialMediaForm(instance = request.user)
             args = {'social_media_form': social_media_form, 'stories': stories, 'user' : request.user}
         
@@ -203,8 +203,10 @@ def create_tournament(request):
         tourney = form.save(commit=False)
         tourney.host = request.user
         tourney.save()
+        messages.success(request, ('Your tournament was successfully created!'))
         return redirect(tournaments)
       else:
+        messages.error(request, ('Please correct the error(s) below'))
         return render(request, "create_tournament.html", {'form' : form})
     else:
       return render(request, "create_tournament.html", {'form' : form})
@@ -216,9 +218,10 @@ def edit_tournament(request, index):
             tournament_form = TournamentForm(request.POST, request.FILES, instance=tournament)
             if tournament_form.is_valid():
                 tournament_form.save()
+                messages.success(request, ('Your tournament was successfully updated!'))
                 return redirect(tournaments)
             else:
-                return render(request, "edit_tournament.html", {'form' : tournament_form})
+                messages.error(request, ('Please correct the error(s) below.'))
         else:
             tournament_form = TournamentForm(instance=tournament)
         return render(request, "edit_tournament.html", {'form' : tournament_form})
@@ -290,11 +293,10 @@ def message(request, index):
     message = Message.objects.get(id=index)
     message.read = True
     message.save()
-    fileExt = os.path.splitext(message.attachment.name)[1][1:]
     template = loader.get_template("message.html")
     inboxCount = messages.filter(receiver = request.user).count()
     sentCount = messages.filter(sender = request.user).count()
-    context = {'message' : message, 'user' : request.user, 'inboxCount' : inboxCount, 'sentCount' : sentCount, 'fileExt' : fileExt}
+    context = {'message' : message, 'user' : request.user, 'inboxCount' : inboxCount, 'sentCount' : sentCount}
     return HttpResponse(template.render(context, request))
 
 def doesUserHaveNewMessage(request):
@@ -307,27 +309,20 @@ def doesUserHaveNewMessage(request):
         return False
 
 def create_message(request):
-    form = MessageForm(request.POST, request.FILES)
+    form = MessageForm(request.POST)
     if request.method == 'POST':
       if form.is_valid():
         message = form.save(commit=False)
         message.sender = request.user
         message.msg_content = form.cleaned_data['message']
-        message.attachment = form.cleaned_data['attachment']
-        #if validate_file_extension(message.attachment.name) == True
-        #else:
-            #error = "Attempted to upload unsupported file format"
-            #return render(request, "create_message.html", {'form' : form, 'error' : error})
         try:
             message.receiver = User.objects.get(username = form.cleaned_data['to'])
             message.save()
             return redirect(messages)
         except User.DoesNotExist:
-            error = "Username does not exist"
-            return render(request, "create_message.html", {'form' : form, 'error' : error})
+            return render(request, "create_message.html", {'form' : form})
       else:
-        error = "Please edit form and try again"
-        return render(request, "create_message.html", {'form' : form, 'error' : error})
+        return render(request, "create_message.html", {'form' : form})
     else:
       return render(request, "create_message.html", {'form' : form})
 
@@ -368,11 +363,4 @@ def new_message(request, profile):
     else:
       return render(request, "create_message.html", {'form' : form})
       
-def validate_file_extension(fileName):
-    import os
-    ext = os.path.splitext(fileName)[1]
-    valid_extensions = ['.jpg','.png','.gif', '.mp4', '.mov', '.avi', '.wmv']
-    if ext in valid_extensions:
-        return True
-    else:
-        return False
+

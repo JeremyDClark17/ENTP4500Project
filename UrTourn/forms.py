@@ -49,7 +49,7 @@ class MessageForm(forms.ModelForm):
         fields = ('to' , 'message', 'attachment')
 
 class SocialMediaForm(forms.ModelForm):
-    story = forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "80", 'rows': "20"}), required=False)
+    story = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Write a Post...', 'width':"100%", 'cols' : "80", 'rows': "10"}), required=False)
     
     class Meta:
 	model = SocialMedia
