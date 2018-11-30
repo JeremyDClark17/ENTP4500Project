@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <title>UrTourn</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.css">
+  <link rel="stylesheet" href="{% static 'css/playerProfile.css' %}">
+</head>
+<body>
+  <div>
+    <div class="ui inverted vertical masthead center aligned segment">
+      <div class="ui container">
+        <div class="ui large secondary inverted pointing menu">
+          <a class="item" href="{% url 'UrTourn.views.home' %}">Home</a>
+          <a class="item" href="{% url 'UrTourn.views.social_media' %}">Social Media</a>
+          <a class="item" href="{% url 'UrTourn.views.players' %}">Players</a>
+          <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
+          <div class="right item">
+          {% if request.user.is_authenticated %}
+            <div class="ui simple dropdown item">
+            {% if currentUser = user %}
+              <a href="{% url 'UrTourn.views.profile' %}"><b>{{ currentUser.username }}</b></a><i class="dropdown icon"></i>
+            {% else %}
+              <a href="{% url 'UrTourn.views.profile' %}">{{ currentUser.username }}</a><i class="dropdown icon"></i>
+            {% endif %}
+              <div class="floating ui red label">!</div>
+              <div class="menu">
+                <a class="item">
+                  <i class="bell icon"></i> Notifications
+                  <div class="floating ui red label">!</div>
+                </a>
+                <a class="item" href="{% url 'UrTourn.views.messages' %}?q=inbox">
+                  <i class="envelope icon"></i> Messages
+                  {% if newMessages = True %}
+                  <div class="floating ui red label">!</div>
+                  {% endif %}
+                </a>
+                <a class="item">
+                  <i class="settings icon"></i> Settings
+                </a>
+                <a class="item" href="{% url 'UrTourn.views.userLogout' %}">
+                  <i class="sign-out icon"></i> Log Out
+                </a>
+              </div>
+            </div>
+          {% else %}
+            <a class="ui inverted button" href="{% url 'UrTourn.views.userLogin' %}">Log in</a>
+            <a class="ui inverted button" href="{% url 'UrTourn.views.signup' %}">Sign Up</a>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+     <div class="ui container">
+       <div class="ui grid">
+         <div class="twelve wide column">
+           <div class="ui segment">
+             <div class="ui grid">
+               <div class="four wide column">
+               {% if user.profile.profile_image %}
+                 <img class="ui image" src="{{MEDIA_ROOT}}{{user.profile.profile_image.url}}" alt="">
+               {% else %}
+                 <img class="ui image" src="/media/profile_images/noPhoto.jpg" alt="">
+               {% endif %}
+               </div>
+               <div class="twelve wide column">
+                 <h2>{{ user.username }}</h2>
+                 <h3>Preferred Gamertag: {{ user.profile.gamertag }}</h3>
+                 <h5>Favorite Games: {{ user.profile.favorite_games }}</h5>
+                 <h5>Birthday: {{ user.profile.birth_date }}</h5>
+                 <h5>Location: {{ user.profile.location }}</h5>
+                 <h5>Player Bio: {{ user.profile.bio }}</h5>
+               </div>
+             </div>
+           </div>
+         </div>
+         <div class="four wide column" align="center">
+           <div class="ui vertical buttons">
+           {% if user != currentUser %}
+             <div class="item">
+               <a class="ui labeled icon black button" href="{% url 'UrTourn.views.create_message' %}">
+                 <i class="envelope icon"></i>
+                 Message
+               </a>
+             </div>
+             {% if following == False %}
+             <div class="item">
+               <a class="ui labeled icon red button" href="{% url 'UrTourn.views.follow' Username=user.username %}">
+                 <i class="heart icon"></i>
+                 Follow
+               </a>
+             </div>
+             {% else %}
+             <div class="item">
+               <a class="ui labeled icon red button" href="{% url 'UrTourn.views.unfollow' Username=user.username %}">
+                 <i class="close icon"></i>
+                 Unfollow
+               </a>
+             </div>
+             {% endif %}
+             <div class="ui large label">
+               Followers:
+               <div class="detail">{{ user.profile.followers.count  }}</div>
+             </div>
+           {% else %}
+             <div class="item">
+               <a class="ui labeled icon black button" href="{% url 'UrTourn.views.update_profile' %}">
+                 <i class="edit icon"></i>
+                 Edit Profile
+               </a>
+             </div>
+             <div class="item">
+               <a class="ui labeled icon black button" href="{% url 'UrTourn.views.userLogout' %}">
+                 <i class="sign-out icon"></i>
+                 Logout
+               </a>
+             </div>
+             <div class ="item">
+               <a class="ui labeled icon negative button" href="{% url 'UrTourn.views.delete_profile' %}">
+                 <i class="user times icon"></i>
+                 Delete Profile
+               </a>
+             </div>
+           {% endif %}
+           </div>
+           <div class="ui segment">
+             <div id="bio-header">
+               <b>Rating: </b>
+             </div>
+             <div id="bio-body">
+             {% if user != currentUser %}
+               <br><br>THE BEST!!!<br><br><br><br>
+             {% else %}
+               <br><br>THE BEST!!!<br><br><br><br>
+             {% endif %}
+             </div>
+           </div>
+         </div>
+       </div>
+       <div class="ui segment" id="interested-in">
+         <div class="ui purple header" id="interstedin-header" align="center">
+           Currently Interested in Esports tournaments for:
+         </div>
+         <div id="interestedin-body">
+         {% if user.profile.current_interests %}
+           {{user.profile.current_interests }}
+         {% else %}
+           None
+         {% endif %}
+         </div>
+       </div>
+       <div class="ui segment" id="events-organized">
+         <div class="ui purple header" id="events-organized-header" align="center">
+           Events Organized:
+         </div>
+         <div id="events-organized-body">
+           None
+         </div>
+       </div>
+     </div>
+  </body>
+</html>

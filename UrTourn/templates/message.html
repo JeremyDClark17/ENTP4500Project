@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <title>UrTourn</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.css">
+    <link rel="stylesheet" href="{% static 'css/messages.css' %}">
+</head>
+<body>
+  <div>
+    <div class="ui inverted vertical masthead center aligned segment">
+      <div class="ui container">
+        <div class="ui large secondary inverted pointing menu">
+          <a class="item" href="{% url 'UrTourn.views.home' %}">Home</a>
+          <a class="item" href="{% url 'UrTourn.views.social_media' %}">Social Media</a>
+          <a class="item" href="{% url 'UrTourn.views.players' %}">Players</a>
+          <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
+          <div class="right item">
+          {% if user.is_authenticated %}
+            <div class="ui simple dropdown item">
+              <a href="{% url 'UrTourn.views.profile' %}">{{ user.username }}</a><i class="dropdown icon"></i>
+              <div class="floating ui red label">!</div>
+              <div class="menu">
+                <a class="item">
+                  <i class="bell icon"></i> Notifications
+                  <div class="floating ui red label">!</div>
+                </a>
+                <a class="item" href="{% url 'UrTourn.views.messages' %}?q=inbox">
+                  <i class="envelope icon"></i> Messages
+                  {% if newMessages = True %}
+                  <div class="floating ui red label">!</div>
+                  {% endif %}
+                </a>
+                <a class="item">
+                  <i class="settings icon"></i> Settings
+                </a>
+                <a class="item" href="{% url 'UrTourn.views.userLogout' %}">
+                  <i class="sign-out icon"></i> Log Out
+                </a>
+              </div>
+            </div>
+          {% else %}
+            <a class="ui inverted button" href="{% url 'UrTourn.views.userLogin' %}">Log in</a>
+            <a class="ui inverted button" href="{% url 'UrTourn.views.signup' %}">Sign Up</a>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+    <div class="ui two column relaxed grid">
+      <div class="three wide column">
+        <div class="ui vertical menu">
+          <div class="item">
+            <a class="active purple item" href="{% url 'UrTourn.views.create_message' %}">
+              <i class="chat outline icon"></i>
+              Compose Message
+            </a>
+          </div>
+          <a class="item" href="{% url 'UrTourn.views.messages' %}?q=inbox">
+            Inbox
+            <div class="ui label">{{ inboxCount }}</div>
+          </a>
+          <a class="item" href="{% url 'UrTourn.views.messages' %}?q=sent">
+            Sent
+            <div class="ui label">{{ sentCount }}</div>
+          </a>
+          <div class="item">
+            <div class="ui transparent icon input">
+              <form method='GET' action=''>
+                <input method='GET' action='' type="text" name='q' placeholder="Search mail...">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="eight wide column">
+        <div class="ui segment">
+          <div class="ui grid">
+            <div class="three wide column">
+              <a href="{% url 'UrTourn.views.profiles' Username=message.sender.username %}">
+                <img class="ui image" src="{{MEDIA_ROOT}}{{message.sender.profile.profile_image.url}}" alt="">
+              </a>
+            </div>
+            <div class="twelve wide column">
+              <h4><a href="{% url 'UrTourn.views.profiles' Username=message.sender.username %}">{{ message.sender }}</a></h4>
+              <h5>{{ message.created_at }}</h5> 
+            </div>
+          </div>
+          <br><p>{{ message.msg_content }}</p>
+          {% if message.attachment %}
+          {% if fileExt == 'jpg' or fileExt == 'gif' or fileExt == 'png' %}
+          <img class="ui fluid image" src="{{ message.attachment.url }}">
+          {% else %}
+          <video width="100%" controls>
+            <source src="{{ message.attachment.url }}" type="video/{{ fileExt }}">
+          </video><br>
+          {% endif %}
+          {% endif %}
+          <br><a class="ui labeled icon purple button" href="{% url 'UrTourn.views.create_message' %}">
+            <i class="reply icon"></i>
+            Reply
+          </a>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

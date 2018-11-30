@@ -1,0 +1,83 @@
+{% block content %}
+  {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <title>UrTourn</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.css">
+  <link rel="stylesheet" href="{% static 'css/create_message.css' %}">
+</head>
+<body>
+  <div>
+    <div class="ui inverted vertical masthead center aligned segment">
+      <div class="ui container">
+        <div class="ui large secondary inverted pointing menu">
+          <a class="item" href="{% url 'UrTourn.views.home' %}">Home</a>
+          <a class="active item" href="{% url 'UrTourn.views.social_media' %}">Social Media</a>
+          <a class="item" href="{% url 'UrTourn.views.players' %}">Players</a>
+          <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
+          <div class="right item">
+          {% if request.user.is_authenticated %}
+            <div class="ui simple dropdown item">
+              <a href="{% url 'UrTourn.views.profile' %}">{{ user.username }}</a><i class="dropdown icon"></i>
+              <div class="floating ui red label">!</div>
+              <div class="menu">
+                <a class="item">
+                  <i class="bell icon"></i> Notifications
+                  <div class="floating ui red label">!</div>
+                </a>
+                <a class="item" href="{% url 'UrTourn.views.messages' %}?q=inbox">
+                  <i class="envelope icon"></i> Messages
+                  {% if newMessages = True %}
+                  <div class="floating ui red label">!</div>
+                  {% endif %}
+                </a>
+                <a class="item">
+                  <i class="settings icon"></i> Settings
+                </a>
+                <a class="item" href="{% url 'UrTourn.views.userLogout' %}">
+                  <i class="sign-out icon"></i> Log Out
+                </a>
+              </div>
+            </div>
+          {% else %}
+            <a class="ui inverted button" href="{% url 'UrTourn.views.userLogin' %}">Log in</a>
+            <a class="ui inverted button" href="{% url 'UrTourn.views.signup' %}">Sign Up</a>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="ui container">
+    <div class="ui grid">
+      <div class="twelve wide column">
+        <div class="post-container">
+          <form method="post" enctype = "multipart/form-data">
+              {% csrf_token %}
+              {% for field in form %}
+                <p>
+                {{ field.label_tag }}<br>
+                {{ field.help_text }}<br>
+                {{ field }}
+	              {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+                {% endfor %}
+                </p>
+              {% endfor %}
+              {% if error %}
+                <p style="color: red">{{ error }}</p><br>
+              {% endif %}
+              <button type="submit" class = "button1">Send Message</button>
+            </form>
+          <br><br>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
