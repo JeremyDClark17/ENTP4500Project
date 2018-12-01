@@ -1,0 +1,32 @@
+{% block content %}
+{% load static %}
+<head>
+  <title>UrTourn</title>
+  <link rel="stylesheet" href="{% static 'css/LoginSignup.css' %}">
+  <div class="loading">
+    <div class="circle light"></div>
+    <div class="circle dark"></div>
+    <div class="branding"></div>
+  </div>
+  {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+  <div class="login">
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <button type="submit">Login</button>
+  </form>
+  </div>
+{% endblock %}

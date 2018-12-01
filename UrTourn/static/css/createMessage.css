@@ -1,0 +1,98 @@
+
+.status-update-input-box {
+  background-color: #fefefe;
+  padding: 1rem;
+  width: 100%;
+  border: 1px solid #cacaca;
+  box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.18), 0 0.125rem 2px rgba(0, 0, 0, 0.36);
+}
+
+.status-update-input-box .input-box-container textarea {
+  margin-bottom: 0;
+}
+
+.status-update-input-box .input-box-container textarea:focus {
+  border: 1px solid #cacaca;
+  box-shadow: none;
+}
+
+.status-update-input-box .input-box-container textarea, .status-update-input-box .input-box-container textarea:focus {
+  border-bottom: none;
+}
+
+@media print, screen and (min-width: 40em) {
+  .status-update-input-box .user-action-container {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+.status-update-input-box .user-action-container .user-action-box {
+  padding: 0;
+  border: 1px solid #cacaca;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.status-update-input-box .user-action-container .user-action-box .action-area {
+  width: 20%;
+  border-right: 0.0625rem solid #cacaca;
+  text-align: center;
+  padding-top: 0.675rem;
+  padding-bottom: 0.675rem;
+}
+
+.status-update-input-box .user-action-container .user-action-box .action-area:last-of-type {
+  border-right: none;
+}
+
+.status-update-input-box .user-action-container .user-action-box .action-area .action-anchor.has-tip {
+  border-bottom: none;
+  cursor: pointer;
+}
+
+.status-update-input-box .user-action-container .user-action-box .action-area .action-anchor .fa {
+  color: #1779ba;
+}
+
+.status-update-input-box .user-action-container .user-submit-box {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #cacaca;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+@media screen and (max-width: 39.9375em) {
+  .status-update-input-box .user-action-container .user-submit-box {
+    border-top: none;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+}
+
+@media print, screen and (min-width: 40em) {
+  .status-update-input-box .user-action-container .user-submit-box {
+    border-left: none;
+  }
+}
+
+.status-update-input-box .user-action-container .user-submit-box .button {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 39.9375em) {
+  .status-update-input-box .user-action-container .user-submit-box .button {
+    display: block;
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+}

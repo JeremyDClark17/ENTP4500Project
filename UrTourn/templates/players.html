@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <title>UrTourn</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.css">
+    <link rel="stylesheet" href="{% static 'css/playerProfile.css' %}">
+</head>
+<body>
+  <div>
+    <div class="ui inverted vertical masthead center aligned segment">
+      <div class="ui container">
+        <div class="ui large secondary inverted pointing menu">
+          <a class="item" href="{% url 'UrTourn.views.home' %}">Home</a>
+          <a class="item" href="{% url 'UrTourn.views.social_media' %}">Social Media</a>
+          <a class="active item" href="{% url 'UrTourn.views.players' %}">Players</a>
+          <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
+          <div class="right item">
+          {% if user.is_authenticated %}
+            <div class="ui simple dropdown item">
+              <a href="{% url 'UrTourn.views.profile' %}">{{ user.username }}</a><i class="dropdown icon"></i>
+              <div class="floating ui red label">!</div>
+              <div class="menu">
+                <a class="item">
+                  <i class="bell icon"></i> Notifications
+                  <div class="floating ui red label">!</div>
+                </a>
+                <a class="item" href="{% url 'UrTourn.views.messages' %}?q=inbox">
+                  <i class="envelope icon"></i> Messages
+                  {% if newMessages = True %}
+                  <div class="floating ui red label">!</div>
+                  {% endif %}
+                </a>
+                <a class="item">
+                  <i class="settings icon"></i> Settings
+                </a>
+                <a class="item" href="{% url 'UrTourn.views.userLogout' %}">
+                  <i class="sign-out icon"></i> Log Out
+                </a>
+              </div>
+            </div>
+          {% else %}
+            <a class="ui inverted button" href="{% url 'UrTourn.views.userLogin' %}">Log in</a>
+            <a class="ui inverted button" href="{% url 'UrTourn.views.signup' %}">Sign Up</a>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ <br>
+    <form method='GET' action=''>
+      <input type='text' name='q' placeholder='Search...' />
+    </form> 
+    <br>
+    <table class="ui celled padded table">
+  <thead>
+    <tr>
+      <th class="two wide">Player</th>
+      <th>Gamertag</th>
+      <th>Favorite Games</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for player in players %}
+    <tr>
+      <td>
+      {% if player.profile.profile_image %}
+        <a href="{% url 'UrTourn.views.profiles' Username=player.username %}">
+          <img class="ui image" src="{{MEDIA_ROOT}}{{player.profile.profile_image.url}}" alt="" width=150px>
+          <h3>{{ player.username }}</h3>
+        </a>
+      {% else %}
+                <a href="{% url 'UrTourn.views.profiles' Username=player.username %}">
+          <img class="ui image" src="/media/profile_images/noPhoto.jpg" alt="" width=150px>
+          <h3>{{ player.username }}</h3>
+        </a>
+      {% endif %}
+      </td>
+      <td>
+        {% if player.profile.gamertag %}
+        {{ player.profile.gamertag }}
+        {% else %}
+        None
+        {% endif %}
+      </td>
+      <td>
+        {% if player.profile.favorite_games %}
+        {{ player.profile.favorite_games }}
+        {% else %}
+        None
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr><th colspan="3">
+      <div class="ui right floated pagination menu">
+        <a class="icon item">
+          <i class="left chevron icon"></i>
+        </a>
+        <a class="item">1</a>
+        <a class="item">2</a>
+        <a class="item">3</a>
+        <a class="item">4</a>
+        <a class="icon item">
+          <i class="right chevron icon"></i>
+        </a>
+      </div>
+    </th>
+  </tr></tfoot>
+</table>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <title>UrTourn</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.css">
+    <link rel="stylesheet" href="{% static 'css/playerProfile.css' %}">
+</head>
+<body>
+  <div>
+    <div class="ui inverted vertical masthead center aligned segment">
+      <div class="ui container">
+        <div class="ui large secondary inverted pointing menu">
+          <a class="item" href="{% url 'UrTourn.views.home' %}">Home</a>
+          <a class="item" href="{% url 'UrTourn.views.social_media' %}">Social Media</a>
+          <a class="item" href="{% url 'UrTourn.views.players' %}">Players</a>
+          <a class="item" href="{% url 'UrTourn.views.tournaments' %}">Tournaments</a>
+          <div class="right item">
+          {% if request.user.is_authenticated %}
+            <div class="ui simple dropdown item">
+              <a href="{% url 'UrTourn.views.profile' %}">{{ user.username }}</a><i class="dropdown icon"></i>
+              <div class="floating ui red label">!</div>
+              <div class="menu">
+                <a class="item">
+                  <i class="bell icon"></i> Notifications
+                  <div class="floating ui red label">!</div>
+                </a>
+                <a class="item" href="{% url 'UrTourn.views.messages' %}?q=inbox">
+                  <i class="envelope icon"></i> Messages
+                  {% if newMessages = True %}
+                  <div class="floating ui red label">!</div>
+                  {% endif %}
+                </a>
+                <a class="item">
+                  <i class="settings icon"></i> Settings
+                </a>
+                <a class="item" href="{% url 'UrTourn.views.userLogout' %}">
+                  <i class="sign-out icon"></i> Log Out
+                </a>
+              </div>
+    <div>
+        <div class="ui inverted menu">
+            <div class="left menu">
+                <a class="ui purple large header" href="/">URTOURN.GG</a>
+            </div>
+            <div class="right menu">
+                <a href="{% url 'UrTourn.views.social_media' %}"><button class="ui inverted grey button">Social Media</button></a>
+                <a href="/"><button class="ui inverted grey button">Players</button></a>
+                <a href="/"><button class="ui inverted grey button">Teams</button></a>
+                <a href="{% url 'UrTourn.views.tournaments' %}"><button class="ui inverted grey button">Tournaments</button></a>
+                <a href="{% url 'UrTourn.views.profile' %}"><button class="ui inverted purple button">Profile</button></a>
+            </div>
+          {% else %}
+            <a class="ui inverted button" href="{% url 'UrTourn.views.userLogin' %}">Log in</a>
+            <a class="ui inverted button" href="{% url 'UrTourn.views.signup' %}">Sign Up</a>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+    <div class="ui container">
+      <div class="ui grid">
+        <div class="twelve wide column">
+	  {% if userStatus == False and tournamentJoinable == False %}
+          <br><a class="ui disabled button" href="">
+            <i class="sitemap icon"></i>
+            Tournament Full!
+          </a>
+          {% elif userStatus == True %}
+	  <br><a class="ui labeled icon red button" href="{% url 'UrTourn.views.leave_tournament' index=tournament.tournament_id %}">
+            <i class="close icon"></i>
+            Leave Tournament
+          </a>
+	  {% else %}
+          <br><a class="ui labeled icon purple button" href="{% url 'UrTourn.views.join_tournament' index=tournament.tournament_id %}">
+            <i class="sitemap icon"></i>
+            Join Tournament
+          </a>
+	  {% endif %}
+	  {% if userHost == True %}
+          <a class="ui labeled icon purple button" href="{% url 'UrTourn.views.edit_tournament' index=tournament.tournament_id %}">
+            <i class="edit icon"></i>
+            Edit Tournament
+          </a>
+	  <a class="ui labeled icon red button" href="{% url 'UrTourn.views.delete_tournament' index=tournament.tournament_id %}">
+            <i class="close icon"></i>
+            Delete Tournament
+          </a>
+	  {% endif %}
+          <div class="ui segment">
+            <div class="ui grid">
+              <div class="sixteen wide column">
+      	        <h2>{{ tournament.name }}</h2>
+                <h3>Host: <a href="{% url 'UrTourn.views.profiles' Username=tournament.host.username %}">{{ tournament.host.username }}</a></h3>
+                <h3>Game: {{ tournament.game }}</h3>
+                <h5>Tournament Type: {{ tournament.tournament_type  }}</h5>
+                <h5>Size: {{ count  }}/{{ tournament.size }}</h5>
+                <h5>Description: {{ tournament.description }}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="ui segment">
+            <div class="ui grid">
+              <div class="sixteen wide column">
+		<div>
+		  <div class="wrapper">
+    		    <div class="brackets" style="font-weight:bold" >
+    		    </div>
+                  </div>
+		  <script src="{% static 'js/jquery-1.11.3.js' %}"></script>
+		  <script src="{% static 'js/brackets.min.js' %}"></script>
+		  <script>
+
+		    var rounds;
+
+		    rounds = [
+		        //-- round 1
+		        [
+		            {
+		                player1: { name: "JeremyDClark17", winner: true, ID: 1, url: "{% url 'UrTourn.views.profiles' Username='JeremyDClark17' %}"},
+		                player2: { name: "ENTP4500Project", ID: 2 , url: "{% url 'UrTourn.views.profiles' Username='ENTP4500Project' %}"}
+		            },
+		            {
+		                player1: { name: "Player 3", winner: true, ID: 3, url: '#player3Profile' },
+		                player2: { name: "Player 4", ID: 4, url: '#player4Profile' }
+		            },
+		            {
+		                player1: { name: "Player 5", winner: true, ID: 5, url: '#player5Profile'},
+		                player2: { name: "Player 6", ID: 6, url: '#player6Profile'}
+		            },
+		            {
+		                player1: { name: "Player 7", winner: true, ID: 7, url: '#player7Profile'},
+		                player2: { name: "Player 8", ID: 8, url: '#player8Profile'}
+		            },
+		            {
+		                player1: { name: "Player 9", winner: true, ID: 9, url: '#player9Profile'},
+		                player2: { name: "Player 10", ID: 10, url: '#player10Profile'}
+		            },
+		            {
+		                player1: { name: "Player 11", winner: true, ID: 11, url: '#player11Profile'},
+		                player2: { name: "Player 12", ID: 12, url: '#player12Profile'}
+		            },
+		            {
+		                player1: { name: "Player 13", winner: true, ID: 13, url: '#player13Profile'},
+		                player2: { name: "Player 14", ID: 14, url: '#player14Profile'}
+		            },
+		            {
+		                player1: { name: "Player 15", winner: true, ID: 15, url: '#player15Profile'},
+		                player2: { name: "Player 16", ID: 16, url: '#player16Profile'}
+		            },
+		        ],
+		        //-- round 2
+		        [
+		            {
+		                player1: { name: "Player 1", winner: true, ID: 1, url: '#player1Profile'},
+		                player2: { name: "Player 4", ID: 4, url: '#player4Profile'}
+		            },
+		            {
+		                player1: { name: "Player 5", winner: true, ID: 5, url: '#player5Profile'},
+		                player2: { name: "Player 8", ID: 8, url: '#player8Profile'}
+		            },
+		            {
+		                player1: { name: "Player 9", winner: true, ID: 9, url: '#player9Profile'},
+		                player2: { name: "Player 12", ID: 12, url: '#player12Profile'}
+		            },
+		            {
+		                player1: { name: "Player 13", winner: true, ID: 13, url: '#player13Profile'},
+		                player2: { name: "Player 16", ID: 16, url: '#player16Profile'}
+		            },
+		        ],
+
+		        //-- round 3
+		        [
+		            {
+		                player1: { name: "Player 1", winner: true, ID: 1, url: '#player1Profile'},
+		                player2: { name: "Player 5", ID: 5, url: '#player5Profile'}
+		            },
+		            {
+		                player1: { name: "Player 9", winner: true, ID: 9, url: '#player9Profile'},
+		                player2: { name: "Player 16", ID: 16, url: '#player16Profile'}
+		            },
+		        ],
+		        //-- round 4
+		        [
+		            {
+		                player1: { name: "Player 5", winner: true, ID: 5, url: '#player5Profile'},
+		                player2: { name: "Player 16", winner: true, ID: 16, url: '#player16Profile'},
+		            },
+		        ],
+		        //-- Championship
+		        [
+		            {
+		                player1: { name: "Player 5", winner: true, ID: 5, url: '#player5Profile'},
+		            },
+		        ],
+		    ];
+
+		    var titles = ['Round 1', 'Round 2', 'Quarterfinals', 'Semifinals', 'Championship'];
+
+
+		    ;(function($){
+
+		        $(".brackets").brackets({
+		            titles: titles,
+		            rounds: rounds,
+		            color_title: '#28004F',
+		            border_color: '#4F0099',
+		            color_player: 'white',
+		            bg_player: '#4F0099',
+		            color_player_hover: 'white',
+		            bg_player_hover: '#28004F',
+		            border_radius_player: '5px',
+		            border_radius_lines: '5px'
+		        });
+
+		    })(jQuery);
+		</script>
+		<br><br>
+		</div>
+              </div>
+            </div>
+          </div>
+	</div>
+      </div>
+    </div>
+</body>
+</html>
