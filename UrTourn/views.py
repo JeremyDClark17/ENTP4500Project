@@ -122,29 +122,12 @@ def social_media(request):
     
     if request.user.is_authenticated():
         if request.method == 'POST':
-            """if form.is_valid():
-                story = form.save(commit=False)
-                story.user = request.user
-                story.save()
-                
-                text=form.cleaned_data['story']
-                return redirect(social_media)
-            
-            args = {'form':form, 'text':text}
-            return render(request, template_name, args)
-            
-        else:
-            form = SocialMediaForm(request.POST, request.FILES, instance = request.user.profile)
-            stories = SocialMedia.objects.all()
-            return render(request, template_name, {'form':form})
-            """
             social_media_form = SocialMediaForm(request.POST)
     	    if social_media_form.is_valid():
         		story = social_media_form.save(commit=False)
         		story.user = request.user
         		story.save()
         		stories = SocialMedia.objects.all()
-        		"""text = social_media_form.cleaned_data['story']"""
           		social_media_form = SocialMediaForm(instance = request.user)
         		return render(request, "social_media.html", {'social_media_form':social_media_form, 'stories': stories})
             else:
@@ -157,7 +140,7 @@ def social_media(request):
 	    
             return render(request, "social_media.html", args)
     else:
-        return redirect(social_media)	
+        return redirect(home)	
     
 
 def delete_profile(request):
